@@ -1,0 +1,7 @@
+//
+export enum Topics {
+  RUN_COMMAND = 'RUN_COMMAND',
+  STDOUT_STREAM = 'STDOUT_STREAM',
+  STDOUT_EXIT = 'STDOUT_EXIT',
+  QUERY = 'QUERY'
+}
