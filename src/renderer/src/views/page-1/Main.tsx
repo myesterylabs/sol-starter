@@ -38,9 +38,11 @@ const parseSolVersion = (str) => {
 function Main() {
   let [solanaInstalled, setSolanaInstalled] = useState(true)
   let [parsedVersion, setParsedVersion] = useState({})
+  let [step1Complete, setStep1Complete] = useState(false)
+  let [step2Complete, setStep2Complete] = useState(false)
   let [step, setStep] = useState(1)
   const increaseStep = () => {
-    if (step < 3) {
+    if (step < 2) {
       setStep(step + 1)
     }
   }
@@ -54,6 +56,8 @@ function Main() {
       let solanaInstalled = await checkSolanaInstallation()
       setSolanaInstalled(solanaInstalled.success)
       if (solanaInstalled.success) {
+        setStep2Complete(true)
+        setStep1Complete(true)
         setParsedVersion(parseSolVersion(solanaInstalled.stdout))
       }
     }
@@ -80,21 +84,28 @@ function Main() {
               step === 2 ? 'btn-primary' : 'bg-slate-100 text-slate-500'
             } mx-2`}
             onClick={() => setStep(2)}
+            disabled={!step1Complete}
           >
             2
           </button>
-          <button
+          {/* <button
             className={`intro-y w-10 h-10 rounded-full btn ${
               step === 3 ? 'btn-primary' : 'bg-slate-100 text-slate-500'
             } mx-2`}
             onClick={() => setStep(3)}
           >
             3
-          </button>
+          </button> */}
         </div>
         <>
-          {step === 1 && <Step1 solanaInstalled={solanaInstalled} parsedVersion={parsedVersion} />}
-          {step === 2 && <Step2 solanaInstalled={solanaInstalled} />}
+          {step === 1 && (
+            <Step1
+              setStep1Complete={setStep1Complete}
+              solanaInstalled={solanaInstalled}
+              parsedVersion={parsedVersion}
+            />
+          )}
+          {step === 2 && <Step2 setStep2Complete={setStep2Complete} />}
           {/* {step === 3 && <Step3 solanaInstalled={solanaInstalled} />} */}
         </>
       </div>
@@ -102,7 +113,11 @@ function Main() {
         <button onClick={() => decreaseStep()} className="btn btn-secondary w-24">
           Previous
         </button>
-        <button onClick={() => increaseStep()} className="btn btn-primary w-24 ml-2">
+        <button
+          onClick={() => increaseStep()}
+          className="btn btn-primary w-24 ml-2"
+          disabled={(step == 1 && !step1Complete) || (step == 2 && !step2Complete)}
+        >
           Next
         </button>
       </div>

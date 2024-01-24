@@ -14,10 +14,11 @@ import { Topics } from '@type/Topic'
 /**
     @param {{solanaInstalled:boolean, parsedVersion: {cliVersion: string, src: string, feat:string,client: string }}} props
  */
-export function Step1({ solanaInstalled, parsedVersion }) {
+export function Step1({ parsedVersion, setStep1Complete }) {
   const [downloading, setDownloading] = useState(false)
   const [downloadProgress, setDownloadProgress] = useState(0)
   const [downloaded, setDownloaded] = useState(false)
+  const [solanaInstalled, setSolanaInstalled] = useState(false)
   let [downloadLog, setDownloadLog] = useState([] as Array<{ id: number; message: string }>)
   const [queued, setQueued] = useState('')
   const download = async () => {
@@ -51,6 +52,19 @@ export function Step1({ solanaInstalled, parsedVersion }) {
     setDownloadProgress(downloadProgress + 10 < 99 ? downloadProgress + 10 : 99)
   }
 
+  async function checkSolanaInstallation() {
+    let res = window.api.runCommand({
+      command: Commands.CHECK_SOLANA_INSTALLATION,
+      channel: Commands.CHECK_SOLANA_INSTALLATION,
+      async: false
+    }) as CommandResult
+
+    if ((await res).success) {
+      setSolanaInstalled(true)
+    } else {
+    }
+  }
+
   useEffect(() => {
     addDownload(queued)
   }, [queued])
@@ -58,22 +72,13 @@ export function Step1({ solanaInstalled, parsedVersion }) {
   useEffect(() => {
     if (downloaded) {
       setDownloadProgress(100)
-      // click a div
+      setStep1Complete(true)
     }
   }, [downloaded])
 
   useEffect(() => {
-    window.api
-      .query({
-        async: false,
-        query: Queries.GET_EXPECTED_PATH,
-        channel: Queries.GET_EXPECTED_PATH
-      })
-      .then((res) => {
-        setExpectedPath(res.stdout)
-        console.log(res)
-      })
-  })
+    checkSolanaInstallation()
+  }, [])
 
   return (
     <>
@@ -85,7 +90,7 @@ export function Step1({ solanaInstalled, parsedVersion }) {
             : 'No Solana installation was found. Please follow the instructions below to install Solana.'}
         </div>
       </div>
-      {!false ? (
+      {!solanaInstalled ? (
         <div className="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
           <div className="font-medium text-base">Installation instruction</div>
           <div className=" gap-y-5 mt-5">

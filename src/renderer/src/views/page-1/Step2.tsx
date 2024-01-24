@@ -13,7 +13,7 @@ import { Topics } from '@type/Topic'
 /**
     @param {{solanaInstalled:boolean, parsedVersion: {cliVersion: string, src: string, feat:string,client: string }}} props
  */
-export function Step2({ solanaInstalled, parsedVersion }) {
+export function Step2({ setStep2Complete }) {
   const [expectedPath, setExpectedPath] = useState('')
   const [addedToPath, setAddedToPath] = useState(false)
   const [error, setError] = useState('')
@@ -43,7 +43,9 @@ export function Step2({ solanaInstalled, parsedVersion }) {
       .then((res) => {
         setExpectedPath(res.stdout)
       })
-  })
+
+    checkSolanaInstallation()
+  }, [])
 
   return (
     <>
