@@ -2,14 +2,11 @@ import { CheckCircle, CheckCircle2 } from 'lucide-react'
 import { CommandResult, Commands } from '@type/Command'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@renderer/base-components'
 import { useEffect, useState } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
 
-import { Queries } from '@type/Queries'
-// import React from 'react'
+import { solVersion as RsolVersion } from '@renderer/stores/installation'
 import Terminal from '@renderer/components/terminal/Main.jsx'
 import { Topics } from '@type/Topic'
-
-// import { invoke } from "@tauri-apps/api/tauri";
-// import { listen } from "@tauri-apps/api/event";
 
 /**
     @param {{solanaInstalled:boolean, parsedVersion: {cliVersion: string, src: string, feat:string,client: string }}} props
@@ -18,9 +15,11 @@ export function Step1({ parsedVersion, setStep1Complete }) {
   const [downloading, setDownloading] = useState(false)
   const [downloadProgress, setDownloadProgress] = useState(0)
   const [downloaded, setDownloaded] = useState(false)
-  const [solanaInstalled, setSolanaInstalled] = useState(false)
+  // const [solanaInstalled, setSolanaInstalled] = useState(false)
+  const solVersion = useRecoilValue(RsolVersion)
   let [downloadLog, setDownloadLog] = useState([] as Array<{ id: number; message: string }>)
   const [queued, setQueued] = useState('')
+
   const download = async () => {
     window.api.runCommand({
       command: Commands.INSTALL_SOLANA,
@@ -52,19 +51,6 @@ export function Step1({ parsedVersion, setStep1Complete }) {
     setDownloadProgress(downloadProgress + 10 < 99 ? downloadProgress + 10 : 99)
   }
 
-  async function checkSolanaInstallation() {
-    let res = window.api.runCommand({
-      command: Commands.CHECK_SOLANA_INSTALLATION,
-      channel: Commands.CHECK_SOLANA_INSTALLATION,
-      async: false
-    }) as CommandResult
-
-    if ((await res).success) {
-      setSolanaInstalled(true)
-    } else {
-    }
-  }
-
   useEffect(() => {
     addDownload(queued)
   }, [queued])
@@ -76,21 +62,17 @@ export function Step1({ parsedVersion, setStep1Complete }) {
     }
   }, [downloaded])
 
-  useEffect(() => {
-    checkSolanaInstallation()
-  }, [])
-
   return (
     <>
       <div className="px-5 mt-10">
         <div className="font-medium text-center text-lg">Solana Installation</div>
         <div className="text-slate-500 text-center mt-2">
-          {solanaInstalled
+          {solVersion.success
             ? 'A valid installation of solana was found'
             : 'No Solana installation was found. Please follow the instructions below to install Solana.'}
         </div>
       </div>
-      {!solanaInstalled ? (
+      {!solVersion.success ? (
         <div className="px-5 sm:px-20 mt-10 pt-10 border-t border-slate-200/60 dark:border-darkmode-400">
           <div className="font-medium text-base">Installation instruction</div>
           <div className=" gap-y-5 mt-5">

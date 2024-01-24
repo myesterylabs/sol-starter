@@ -9,8 +9,10 @@ export type Command = {
   async: boolean
 }
 
-export type CommandResult = Promise<{
+export type CommandResult = Promise<CommandResultResolved>
+
+export type CommandResultResolved = {
   stderr: string
   stdout: string
   success: boolean
-}>
+}

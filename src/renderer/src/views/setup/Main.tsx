@@ -1,24 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { Commands } from '@type/Command'
+// import { Commands } from '@type/Command'
+import { solVersion as RsolVersion } from '@renderer/stores/installation'
 import Step1 from './Step1'
 import Step2 from './Step2'
-
-// import Step3 from './step3'
-
-async function checkSolanaInstallation() {
-  let res = window.api.runCommand({
-    command: Commands.CHECK_SOLANA_INSTALLATION,
-    channel: Commands.CHECK_SOLANA_INSTALLATION,
-    async: false
-  })
-
-  if (res == null) {
-    throw new Error('Could not determine version')
-  }
-
-  return res
-}
+import { useRecoilValue } from 'recoil'
 
 /**
  * @returns {{cliVersion: string, src: string, feat:string,client: string }} The result of the operation.
@@ -36,7 +22,7 @@ const parseSolVersion = (str) => {
   }
 }
 function Main() {
-  let [solanaInstalled, setSolanaInstalled] = useState(true)
+  const solVersion = useRecoilValue(RsolVersion)
   let [parsedVersion, setParsedVersion] = useState({})
   let [step1Complete, setStep1Complete] = useState(false)
   let [step2Complete, setStep2Complete] = useState(false)
@@ -53,12 +39,13 @@ function Main() {
   }
   useEffect(() => {
     async function waiter() {
-      let solanaInstalled = await checkSolanaInstallation()
-      setSolanaInstalled(solanaInstalled.success)
-      if (solanaInstalled.success) {
+      // let solanaInstalled = await checkSolanaInstallation()
+      // setSolVersion(solanaInstalled)
+      // setSolanaInstalled(solanaInstalled.success)
+      if (solVersion.success) {
         setStep2Complete(true)
         setStep1Complete(true)
-        setParsedVersion(parseSolVersion(solanaInstalled.stdout))
+        setParsedVersion(parseSolVersion(solVersion.stdout))
       }
     }
     waiter()
@@ -101,7 +88,6 @@ function Main() {
           {step === 1 && (
             <Step1
               setStep1Complete={setStep1Complete}
-              solanaInstalled={solanaInstalled}
               parsedVersion={parsedVersion}
             />
           )}

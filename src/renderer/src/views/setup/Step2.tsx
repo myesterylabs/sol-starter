@@ -1,22 +1,23 @@
 import { CommandResult, Commands } from '@type/Command'
+import { solVersion as RsolVersion, solTrigger } from '@renderer/stores/installation'
 import { useEffect, useState } from 'react'
+import { useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { CheckCircle2 } from 'lucide-react'
 import { Queries } from '@type/Queries'
 // import React from 'react'
 import Terminal from '@renderer/components/terminal/Main.jsx'
-import { Topics } from '@type/Topic'
-
-// import { invoke } from "@tauri-apps/api/tauri";
-// import { listen } from "@tauri-apps/api/event";
 
 /**
     @param {{solanaInstalled:boolean, parsedVersion: {cliVersion: string, src: string, feat:string,client: string }}} props
  */
-export function Step2({ setStep2Complete }) {
+export function Step2() {
   const [expectedPath, setExpectedPath] = useState('')
-  const [addedToPath, setAddedToPath] = useState(false)
+  // const [addedToPath, setAddedToPath] = useState(false)
   const [error, setError] = useState('')
+  const solVersion = useRecoilValue(RsolVersion)
+  const reset = useResetRecoilState(solTrigger)
+  // const setSolVersion = useSetRecoilState(RsolVersion)
 
   async function checkSolanaInstallation() {
     let res = window.api.runCommand({
@@ -26,7 +27,8 @@ export function Step2({ setStep2Complete }) {
     }) as CommandResult
 
     if ((await res).success) {
-      setAddedToPath(true)
+      // setSolVersion(() => res)
+      reset()
       setError('')
     } else {
       setError("PATH settings couldn't be verified, please follow the instructions carefully")
@@ -44,7 +46,7 @@ export function Step2({ setStep2Complete }) {
         setExpectedPath(res.stdout)
       })
 
-    checkSolanaInstallation()
+    // checkSolanaInstallation()
   }, [])
 
   return (
@@ -53,7 +55,7 @@ export function Step2({ setStep2Complete }) {
         <div className="px-5 mt-10">
           <div className="font-medium text-center text-lg">Path Settings</div>
           <div className="text-slate-500 text-center mt-2 ">
-            {addedToPath ? (
+            {solVersion.success ? (
               <div className="flex gap-2 justify-center">
                 <div>Path Settings have been verified.</div>
                 <CheckCircle2 size={16} color="green" className="mx-1" />
@@ -67,10 +69,10 @@ export function Step2({ setStep2Complete }) {
             )}
           </div>
 
-          {!addedToPath && <Terminal body={`export PATH="${expectedPath}:$PATH"`} />}
+          {!solVersion.success && <Terminal body={`export PATH="${expectedPath}:$PATH"`} />}
         </div>
         <div className="px-5 sm:px-20">
-          {!addedToPath && (
+          {!solVersion.success && (
             <div className="accordion-body text-slate-600 dark:text-slate-500 leading-relaxed">
               Click the button below to verify path settings
               <div className="mt-5">

@@ -1,21 +1,31 @@
-import { atom } from "recoil";
+import { atom } from 'recoil'
 
 const sideMenu = atom({
-  key: "sideMenu",
+  key: 'sideMenu',
   default: {
     menu: [
       {
-        icon: "Play",
-        pathname: "/",
-        title: "Setup",
+        icon: 'Home',
+        pathname: '/',
+        title: 'Home'
       },
       {
-        icon: "Wallet",
-        pathname: "/wallet",
-        title: "Wallet",
+        icon: 'Download',
+        pathname: '/setup',
+        title: 'Setup'
       },
-    ],
-  },
-});
+      {
+        icon: 'Wallet',
+        pathname: '/wallet',
+        title: 'Wallet'
+      },
+      {
+        icon: 'Monitor',
+        pathname: '/validator',
+        title: 'Validator'
+      }
+    ]
+  }
+})
 
-export { sideMenu };
+export { sideMenu }
