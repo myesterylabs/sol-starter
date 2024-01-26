@@ -8719,6 +8719,11 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
+recoil-nexus@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/recoil-nexus/-/recoil-nexus-0.5.0.tgz#965835c6ba54774283e463bbb314859b1969c079"
+  integrity sha512-I2qerncPPmTPhFi0V/q2ebwKrRq9UXqZf30xoNUYLCZnjwxsusbfZKHICULVxjOhIJ3nkU2xrnVjdfVjKaYLEQ==
+
 recoil@^0.7.0:
   version "0.7.7"
   resolved "https://registry.yarnpkg.com/recoil/-/recoil-0.7.7.tgz#c5f2c843224384c9c09e4a62c060fb4c1454dc8e"
@@ -10052,6 +10057,11 @@ utila@~0.4:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/utila/-/utila-0.4.0.tgz#8a16a05d445657a3aea5eecc5b12a4fa5379772c"
   integrity sha512-Z0DbgELS9/L/75wZbro8xAnT50pBVFQZ+hUEueGDU5FN51YSCYM+jdxsfCiHjwNP/4LCDD0i/graKpeBnOXKRA==
+
+uuid@^9.0.1:
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-9.0.1.tgz#e188d4c8853cc722220392c424cd637f32293f30"
+  integrity sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"

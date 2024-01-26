@@ -16,7 +16,11 @@ const api = {
   },
   listen: (event: string, channel: string, callback: Function) =>
     ipcRenderer.on(`${event}:${channel}`, (_event, value) => callback(value)),
-  query: (query: Query) => ipcRenderer.invoke(Topics.QUERY,query) as CommandResult
+  query: (query: Query) => ipcRenderer.invoke(Topics.QUERY, query) as CommandResult,
+  runValidator: () => ipcRenderer.invoke(Topics.RUN_VALIDATOR),
+  killValidator: () => ipcRenderer.invoke(Topics.KILL_VALIDATOR),
+  isValidatorRunning: (): Promise<boolean> =>
+    ipcRenderer.invoke(Topics.IS_VALIDATOR_RUNNING) as Promise<boolean>
 }
 
 export type APIType = typeof api

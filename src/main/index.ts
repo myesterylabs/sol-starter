@@ -8,6 +8,7 @@ import RunQuery from './queries'
 import { Topics } from '../types/Topic'
 import icon from '../../resources/icon.png?asset'
 import { join } from 'path'
+import { spawn } from 'child_process'
 
 let mainWindow: BrowserWindow
 function createWindow(): void {
@@ -42,6 +43,34 @@ function createWindow(): void {
   }
 }
 
+let validatorProcess: import('child_process').ChildProcess | null = null;
+function runValidator(): boolean {
+  if (validatorProcess) {
+    validatorProcess.kill('SIGTERM')
+  }
+  validatorProcess = spawn('solana-test-validator')
+  console.log(validatorProcess.pid)
+  validatorProcess.stdout?.on('data', (data) => {
+    mainWindow.webContents.send(`${Topics.STDOUT_STREAM}:VALIDATOR`, data.toString())
+  })
+  return true
+}
+
+function killValidator(): boolean {
+  if (validatorProcess) {
+    validatorProcess.kill('SIGTERM')
+  }
+  validatorProcess = null;
+  return true
+}
+
+function isValidatorRunning(): boolean {
+  if (validatorProcess) {
+    return true
+  }
+  return false
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -74,6 +103,18 @@ app.whenReady().then(() => {
 
   ipcMain.handle(Topics.RUN_COMMAND, (_event, command: Command) => {
     return RunCommand(command, mainWindow)
+  })
+
+  ipcMain.handle(Topics.RUN_VALIDATOR, (_event) => {
+    return runValidator()
+  })
+
+  ipcMain.handle(Topics.KILL_VALIDATOR, (_event) => {
+    return killValidator()
+  })
+
+  ipcMain.handle(Topics.IS_VALIDATOR_RUNNING, (_event) => {
+    return isValidatorRunning()
   })
 })
 

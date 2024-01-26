@@ -1,12 +1,12 @@
 import { CheckCircle, CheckCircle2 } from 'lucide-react'
-import { CommandResult, Commands } from '@type/Command'
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@renderer/base-components'
 import { useEffect, useState } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
 
+import { Commands } from '@type/Command'
 import { solVersion as RsolVersion } from '@renderer/stores/installation'
 import Terminal from '@renderer/components/terminal/Main.jsx'
 import { Topics } from '@type/Topic'
+import { useRecoilValue } from 'recoil'
 
 /**
     @param {{solanaInstalled:boolean, parsedVersion: {cliVersion: string, src: string, feat:string,client: string }}} props

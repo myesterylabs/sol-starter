@@ -6,12 +6,7 @@
   border-radius: 5px 5px 0 0;
   position: relative;
 }
-/* .terminal .top {
-  background: #e8e6e8;
-  color: black;
-  padding: 5px;
-  border-radius: 5px 5px 0 0;
-} */
+
 
 .terminal .circle {
   width: 12px;
@@ -46,6 +41,8 @@
   padding: 8px;
   overflow: auto;
   font-size: 10px;
+  max-height: 50vh;
+  overflow-y: scroll;
 }
 .space {
   margin: 25px;

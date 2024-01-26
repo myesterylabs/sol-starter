@@ -1,7 +1,7 @@
 import { CommandResultResolved, Commands } from '@type/Command'
 import { atom, selector, useRecoilValue } from 'recoil'
 
-import { set } from 'lodash'
+// import { set } from 'lodash'
 
 // const solVersionValue = atom<CommandResultResolved>({
 //   key: 'solVersionValue',

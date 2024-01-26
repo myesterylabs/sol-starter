@@ -1,0 +1,88 @@
+import { atom, selector } from 'recoil'
+import { getRecoil, setRecoil } from 'recoil-nexus'
+
+import { Topics } from '@type/Topic'
+import { v4 as uuidv4 } from 'uuid'
+
+// import { Commands } from '@type/Command'
+
+// isValidatorRunning
+const valTrigger = atom({
+  key: 'valTrigger',
+  default: 0
+})
+
+const validatorStats = atom({
+  key: 'validatorStats',
+  default: {
+    processed: 0,
+    confirmed: 0,
+    finalized: 0
+  }
+})
+
+const validatorStatus = selector({
+  key: 'validatorStatus',
+  get: async ({ get }) => {
+    get(valTrigger)
+    let res = await window.api.isValidatorRunning()
+    if (res == null) {
+      throw new Error('Could not determine status')
+    }
+    return res
+  }
+})
+
+const validatorLogs = atom({
+  key: 'validatorLogs',
+  default: [] as { id: string; message: string }[]
+})
+const parseLog = (
+  inputString: string
+): {
+  processed: number
+  confirmed: number
+  finalized: number
+} | null => {
+  // const inputString =
+  // '00:03:49 | Processed Slot: 2527 | Confirmed Slot: 2527 | Finalized Slot: 2495 | Full Snapshot Slot: 2408 | Incremental Snapshot Slot: - | Transactions: 2509 | ◎499.987455000'
+
+  // Define a regular expression pattern to match the relevant information
+  const pattern = /Processed Slot: (\d+) \| Confirmed Slot: (\d+) \| Finalized Slot: (\d+)/
+
+  // Use the regular expression to extract the information
+  const match = inputString.match(pattern)
+
+  if (match) {
+    const processed = parseInt(match[1])
+    const confirmed = parseInt(match[2])
+    const finalized = parseInt(match[3])
+
+    // Create the desired JSON object
+    const result = {
+      processed: processed,
+      confirmed: confirmed,
+      finalized: finalized
+    }
+
+    return result
+  }
+  return null
+}
+
+window.api.listen(Topics.STDOUT_STREAM, Topics.VALIDATOR, (val: string) => {
+  let oldLogs = getRecoil(validatorLogs)
+  let parsed = parseLog(val)
+  if (parsed) {
+    setRecoil(validatorStats, parsed)
+  }
+  setRecoil(validatorLogs, [
+    ...oldLogs,
+    {
+      id: uuidv4(),
+      message: val
+    }
+  ])
+})
+
+export { validatorStatus, valTrigger, validatorLogs, validatorStats }
