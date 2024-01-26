@@ -23,6 +23,7 @@
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
     "axios": "^1.6.5",
+    "electron-store": "^8.1.0",
     "electron-updater": "^6.1.7",
     "uuid": "^9.0.1"
   },

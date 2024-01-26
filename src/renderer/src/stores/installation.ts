@@ -1,3 +1,5 @@
+import './saved-store'
+
 import { CommandResultResolved, Commands } from '@type/Command'
 import { atom, selector, useRecoilValue } from 'recoil'
 

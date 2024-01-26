@@ -2,6 +2,7 @@ import { Command, CommandResult } from '../types/Command'
 import { contextBridge, ipcRenderer } from 'electron'
 
 import { Query } from '../types/Queries'
+import { SavedStore } from '../types/Store'
 import { Topics } from '../types/Topic'
 import { electronAPI } from '@electron-toolkit/preload'
 
@@ -20,7 +21,8 @@ const api = {
   runValidator: () => ipcRenderer.invoke(Topics.RUN_VALIDATOR),
   killValidator: () => ipcRenderer.invoke(Topics.KILL_VALIDATOR),
   isValidatorRunning: (): Promise<boolean> =>
-    ipcRenderer.invoke(Topics.IS_VALIDATOR_RUNNING) as Promise<boolean>
+    ipcRenderer.invoke(Topics.IS_VALIDATOR_RUNNING) as Promise<boolean>,
+  fetchSavedStore: (): Promise<SavedStore> => ipcRenderer.invoke(Topics.SAVEDSTORE),
 }
 
 export type APIType = typeof api

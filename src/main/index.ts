@@ -5,10 +5,12 @@ import { Command } from '../types/Command'
 import { Query } from '../types/Queries'
 import { RunCommand } from './commands'
 import RunQuery from './queries'
+import { SavedStore } from '../types/Store'
 import { Topics } from '../types/Topic'
 import icon from '../../resources/icon.png?asset'
 import { join } from 'path'
 import { spawn } from 'child_process'
+import { store } from './store/index'
 
 let mainWindow: BrowserWindow
 function createWindow(): void {
@@ -43,7 +45,7 @@ function createWindow(): void {
   }
 }
 
-let validatorProcess: import('child_process').ChildProcess | null = null;
+let validatorProcess: import('child_process').ChildProcess | null = null
 function runValidator(): boolean {
   if (validatorProcess) {
     validatorProcess.kill('SIGTERM')
@@ -62,7 +64,7 @@ function killValidator(): boolean {
   if (validatorProcess) {
     validatorProcess.kill('SIGTERM')
   }
-  validatorProcess = null;
+  validatorProcess = null
   mainWindow.webContents.send(`${Topics.VALIDATOR}:${Topics.STATUS}`, false)
   return true
 }
@@ -119,6 +121,18 @@ app.whenReady().then(() => {
   ipcMain.handle(Topics.IS_VALIDATOR_RUNNING, (_event) => {
     return isValidatorRunning()
   })
+  ipcMain.handle(Topics.SAVEDSTORE, (_event) => {
+    console.log('store sent to frontend')
+    return store.store
+  })
+  ipcMain.on(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, (_event, val: SavedStore) => {
+    store.set(val)
+  })
+  store.onDidAnyChange((newVal, oldVal) => {
+    console.log(oldVal, newVal, store.store)
+    mainWindow.webContents.send(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, store.store)
+  })
+  // store.set('foo', 1 + Math.random())
 })
 
 // Quit when all windows are closed, except on macOS. There, it's common
