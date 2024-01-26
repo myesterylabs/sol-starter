@@ -47,12 +47,14 @@ let validatorProcess: import('child_process').ChildProcess | null = null;
 function runValidator(): boolean {
   if (validatorProcess) {
     validatorProcess.kill('SIGTERM')
+    mainWindow.webContents.send(`${Topics.VALIDATOR}:${Topics.STATUS}`, false)
   }
   validatorProcess = spawn('solana-test-validator')
-  console.log(validatorProcess.pid)
+  // console.log(validatorProcess.pid)
   validatorProcess.stdout?.on('data', (data) => {
     mainWindow.webContents.send(`${Topics.STDOUT_STREAM}:VALIDATOR`, data.toString())
   })
+  mainWindow.webContents.send(`${Topics.VALIDATOR}:${Topics.STATUS}`, true)
   return true
 }
 
@@ -61,6 +63,7 @@ function killValidator(): boolean {
     validatorProcess.kill('SIGTERM')
   }
   validatorProcess = null;
+  mainWindow.webContents.send(`${Topics.VALIDATOR}:${Topics.STATUS}`, false)
   return true
 }
 

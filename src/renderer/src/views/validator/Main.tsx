@@ -1,6 +1,6 @@
 import { Lucide, TabGroup } from '@renderer/base-components'
 import { useEffect, useState } from 'react'
-import { validatorLogs, validatorStats } from '@renderer/stores/validator'
+import { validatorLogs, validatorStats, validatorStatus } from '@renderer/stores/validator'
 
 import { solVersion as RsolVersion } from '@renderer/stores/installation'
 import Terminal from '@renderer/components/terminal/Main.jsx'
@@ -23,27 +23,10 @@ function Main() {
   // const reset = useResetRecoilState(valTrigger)
   const solVersion = useRecoilValue(RsolVersion)
   let [parsedVersion, setParsedVersion] = useState({} as ReturnType<typeof parseSolVersion>)
-  const [running, setRunning] = useState(false)
+  const running = useRecoilValue(validatorStatus)
   const parsedLog = useRecoilValue(validatorStats)
   let downloadLog = useRecoilValue(validatorLogs)
 
-  const runValidator = async () => {
-    console.log('clicked')
-    await window.api.runValidator()
-    // reset()
-    getStatus()
-    console.log('resetted')
-  }
-
-  async function getStatus() {
-    return setRunning(await window.api.isValidatorRunning())
-  }
-
-  const killValidator = async () => {
-    let res = await window.api.killValidator()
-    console.log(res)
-    getStatus()
-  }
   useEffect(() => {
     async function waiter() {
       if (solVersion.success) {
@@ -51,25 +34,8 @@ function Main() {
       }
     }
     waiter()
-    getStatus()
   }, [solVersion])
 
-  // const addDownload = (download) => {
-  //   let p = parseLog(download)
-  //   if (p) {
-  //     setParsedLog(p)
-  //   }
-  //   setDownloadLog([
-  //     ...downloadLog,
-  //     {
-  //       id: uuidv4(),
-  //       message: download
-  //     }
-  //   ])
-  // }
-  // useEffect(() => {
-  //   addDownload(queued)
-  // }, [queued])
   return (
     <>
       <div className="intro-y flex items-center mt-8">
@@ -125,14 +91,17 @@ function Main() {
             </div>
             <div className="items-center mr-5">
               {(running && (
-                <button onClick={() => killValidator()} className="btn btn-danger w-24 ml-2">
+                <button
+                  onClick={() => window.api.killValidator()}
+                  className="btn btn-danger w-24 ml-2"
+                >
                   Switch off
                 </button>
               )) || (
                 <button
                   className="btn btn-info w-24 ml-2"
                   onClick={() => {
-                    runValidator()
+                    window.api.runValidator()
                   }}
                 >
                   Switch on

@@ -21,16 +21,9 @@ const validatorStats = atom({
   }
 })
 
-const validatorStatus = selector({
+const validatorStatus = atom({
   key: 'validatorStatus',
-  get: async ({ get }) => {
-    get(valTrigger)
-    let res = await window.api.isValidatorRunning()
-    if (res == null) {
-      throw new Error('Could not determine status')
-    }
-    return res
-  }
+  default: false
 })
 
 const validatorLogs = atom({
@@ -83,6 +76,10 @@ window.api.listen(Topics.STDOUT_STREAM, Topics.VALIDATOR, (val: string) => {
       message: val
     }
   ])
+})
+
+window.api.listen(Topics.VALIDATOR, Topics.STATUS, (val: boolean) => {
+  setRecoil(validatorStatus, val)
 })
 
 export { validatorStatus, valTrigger, validatorLogs, validatorStats }
