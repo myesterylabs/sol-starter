@@ -1,5 +1,5 @@
 import { colors } from "./colors";
-// import { faker } from "./faker";
+import { faker } from "./faker";
 import { helper } from "./helper";
-const faker = {};
+// const faker = {};
 export { faker, helper, colors };
