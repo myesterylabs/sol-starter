@@ -1,8 +1,7 @@
-import { atom, selector } from 'recoil'
-import { getRecoil, setRecoil } from 'recoil-nexus'
-
 import { SavedStore } from '@type/Store'
 import { Topics } from '@type/Topic'
+import { atom, } from 'recoil'
+import { setRecoil } from 'recoil-nexus'
 
 // import { v4 as uuidv4 } from 'uuid'
 

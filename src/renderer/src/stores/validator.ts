@@ -83,3 +83,4 @@ window.api.listen(Topics.VALIDATOR, Topics.STATUS, (val: boolean) => {
 })
 
 export { validatorStatus, valTrigger, validatorLogs, validatorStats }
+

@@ -60,8 +60,15 @@ function Main() {
               <div className="font-medium text-center lg:text-left lg:mt-3">Validator Details</div>
               <div className="flex flex-col justify-center items-center lg:items-start mt-4">
                 <div className="truncate sm:whitespace-normal flex items-center">
-                  <Lucide icon="PieChart" className="w-4 h-4 mr-2" />
-                  {parsedVersion.client}
+                  <Lucide icon="Server" className="w-4 h-4 mr-2" />
+                  <a target="_blank" href="https://192.168.0.1">
+                    https://192.168.0.1
+                  </a>
+                </div>
+
+                <div className="truncate sm:whitespace-normal flex items-center">
+                  <Lucide icon="BarChart" className="w-4 h-4 mr-2" />
+                  <a href="ws://192.168.0.1">ws://192.168.0.1</a>
                 </div>
                 <div className="truncate sm:whitespace-normal flex items-center mt-3">
                   <Lucide icon="Rocket" className="w-4 h-4 mr-2" />

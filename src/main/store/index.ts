@@ -12,6 +12,16 @@ const schema: Store.Schema<SavedStore> = {
     type: 'string',
     format: 'uri',
     default: 'http://jp.com'
+  },
+  json_rpc_url: {
+    type: 'string',
+    format: 'uri',
+    default: 'http://127.0.0.1:8899'
+  },
+  ws_url: {
+    type: 'string',
+    format: 'uri',
+    default: 'ws://127.0.0.1:8900'
   }
 }
 
