@@ -15,14 +15,24 @@ const sideMenu = atom({
         title: 'Setup'
       },
       {
+        icon: 'Code',
+        pathname: '/projects',
+        title: 'Projects'
+      },
+      {
         icon: 'Wallet',
-        pathname: '/wallet',
-        title: 'Wallet'
+        pathname: '/accounts',
+        title: 'Accounts'
       },
       {
         icon: 'Monitor',
         pathname: '/validator',
         title: 'Validator'
+      },
+      {
+        icon: 'Settings',
+        pathname: '/settings',
+        title: 'Settings'
       }
     ]
   }

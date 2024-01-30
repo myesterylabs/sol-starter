@@ -1,3 +1,4 @@
+import Home from '../views/home/Main'
 import NotFound from '../views/404/Main'
 // import Petupage2 from "../views/page-2/Main";
 import Setup from '../views/setup/Main'
@@ -12,7 +13,7 @@ function Router() {
       children: [
         {
           path: '/',
-          element: <Setup />
+          element: <Home />
         },
         {
           path: '/setup',
