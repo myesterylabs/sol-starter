@@ -1,17 +1,17 @@
 import { BrowserWindow, app, dialog, ipcMain, shell } from 'electron'
 import { FileSystemWallet, SavedStore } from '../types/Store'
 import { RunCommand, createAccount } from './commands'
+import RunQuery, { sendSettings } from './queries'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 
 import { Command } from '../types/Command'
 import { Query } from '../types/Queries'
-import RunQuery from './queries'
 import { Topics } from '../types/Topic'
 import icon from '../../resources/icon.png?asset'
 import { join } from 'path'
 import { spawn } from 'child_process'
 import { store } from './store/index'
-import { v4 } from 'uuid'
+import { ulid } from 'ulid'
 
 let mainWindow: BrowserWindow
 function createWindow(): void {
@@ -126,24 +126,25 @@ app.whenReady().then(() => {
     console.log('store sent to frontend')
     return store.store
   })
-  ipcMain.handle(Topics.OPEN_FOLDER, async () => {
-    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
-      properties: ['openDirectory']
-    })
-    if (canceled) {
-      return
-    } else {
-      return filePaths[0]
-    }
+  ipcMain.handle(Topics.OPEN_FOLDER, async (_event, path: string) => {
+    // const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+    //   properties: ['openDirectory']
+    // })
+    // if (canceled) {
+    //   return
+    // } else {
+    //   return filePaths[0]
+    // }
+    return await shell.openPath(path)
   })
   ipcMain.handle(Topics.CREATE_ACCOUNT, (_event, name: string, override: boolean) => {
     let outfile: string | null = null
     if (!override) {
-      outfile = `${app.getPath('home')}/.config/solana/id-${v4()}.json`
+      outfile = `${app.getPath('home')}/.config/solana/id-${ulid()}.json`
     }
     let res = createAccount(outfile, override)
 
-    if (res?.success ) {
+    if (res?.success) {
       store.set('accounts', [
         ...(store.get('accounts') || ([] as Array<FileSystemWallet>)),
         {
@@ -162,13 +163,18 @@ app.whenReady().then(() => {
   ipcMain.on(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, (_event, val: SavedStore) => {
     store.set(val)
   })
-  store.onDidAnyChange((newVal, oldVal) => {
-    console.log(oldVal, newVal, store.store)
+  store.onDidAnyChange(() => {
     mainWindow.webContents.send(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, store.store)
   })
-  // store.set('foo', 1 + Math.random())
-})
 
+  setTimeout(() => {
+    mainWindow.webContents.send(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, store.store)
+    let settings
+    if ((settings = sendSettings())) {
+      mainWindow.webContents.send(`${Topics.SETTINGS}:${Topics.UPDATE}`, settings)
+    }
+  }, 2000)
+})
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.

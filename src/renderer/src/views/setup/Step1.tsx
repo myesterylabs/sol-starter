@@ -1,10 +1,10 @@
 import { CheckCircle, CheckCircle2 } from 'lucide-react'
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@renderer/base-components'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@/base-components'
 import { useEffect, useState } from 'react'
 
 import { Commands } from '@type/Command'
-import { solVersion as RsolVersion } from '@renderer/stores/installation'
-import Terminal from '@renderer/components/terminal/Main.jsx'
+import { solVersion as RsolVersion } from '@/stores/installation'
+import Terminal from '@/components/terminal/Main.jsx'
 import { Topics } from '@type/Topic'
 import { useRecoilValue } from 'recoil'
 

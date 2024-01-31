@@ -1,6 +1,6 @@
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { enter, leave, linkTo, toggleMobileMenu } from "./index";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 import { helper as $h } from "@/utils";
 import { Lucide } from "@/base-components";
@@ -36,13 +36,13 @@ function Main(props) {
         })}
       >
         <div className="mobile-menu-bar fixed">
-          <a href="" className="flex mr-auto">
+          <Link to="/" className="flex mr-auto">
             <img
               alt="Logo"
               className="w-6"
               src={logoUrl}
             />
-          </a>
+          </Link>
           <a
             href="#"
             onClick={(e) => e.preventDefault()}

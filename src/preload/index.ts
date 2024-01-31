@@ -23,7 +23,7 @@ const api = {
   isValidatorRunning: (): Promise<boolean> =>
     ipcRenderer.invoke(Topics.IS_VALIDATOR_RUNNING) as Promise<boolean>,
   fetchSavedStore: (): Promise<SavedStore> => ipcRenderer.invoke(Topics.SAVEDSTORE),
-  openFolder: (): Promise<string> => ipcRenderer.invoke(Topics.OPEN_FOLDER),
+  openFolder: (path): Promise<string> => ipcRenderer.invoke(Topics.OPEN_FOLDER,path),
   createAccount: (name: string, override:boolean) => ipcRenderer.invoke(Topics.CREATE_ACCOUNT, name, override)
 }
 

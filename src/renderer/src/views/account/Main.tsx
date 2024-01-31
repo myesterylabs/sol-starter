@@ -1,22 +1,11 @@
-import * as $_ from 'lodash'
-
-import {
-  Dropdown,
-  DropdownContent,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Lucide,
-  Modal,
-  ModalBody,
-  Tippy
-} from '@/base-components'
+import { Lucide, Modal, ModalBody } from '@/base-components'
 import { adjectives, animals, colors, uniqueNamesGenerator } from 'unique-names-generator'
 import { useEffect, useState } from 'react'
 
-import { faker as $f } from '@/utils'
 import Empty from '@/components/empty/Main'
-import { savedStore } from '@renderer/stores/saved-store'
+import { Link } from 'react-router-dom'
+import { savedStore } from '@/stores/saved-store'
+import { solSettings } from '@/stores/sol-settings'
 import { useRecoilValue } from 'recoil'
 
 function Main() {
@@ -24,7 +13,10 @@ function Main() {
   const [accountName, setAccountName] = useState('')
   const [mainAccount, setMainAccount] = useState(false)
   const store = useRecoilValue(savedStore)
-
+  const settings = useRecoilValue(solSettings)
+  const trim = (str: string) => {
+    return str.length > 20 ? str.substring(0, 30) + '...' : str
+  }
 
   useEffect(() => {
     const shortName = uniqueNamesGenerator({
@@ -60,26 +52,47 @@ function Main() {
                   <th className="whitespace-nowrap">ACCOUNT</th>
                   <th className="text-center whitespace-nowrap">PATH</th>
                   <th className="text-center whitespace-nowrap">ALIAS</th>
-                  <th className="text-center whitespace-nowrap">BALANCE</th>
+                  <th className="text-center whitespace-nowrap">DEFAULT</th>
                 </tr>
               </thead>
               <tbody>
                 {store.accounts?.map((account) => (
                   <tr key={account.publicKey} className="intro-x">
                     <td>
-                      <a href="" className="font-medium whitespace-nowrap text-xs xl:text-sm">
+                      <Link
+                        to="`/accounts/${account.publicKey}`"
+                        className="font-medium whitespace-nowrap text-xs xl:text-sm"
+                      >
                         {account.publicKey}
-                      </a>
+                      </Link>
                       <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
                         {account.created_at}
                       </div>
                     </td>
-                    <td className="text-center">{account.path}</td>
+                    <td className="text-center">
+                      <Link
+                        to="/"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          window.api.openFolder(account.path)
+                        }}
+                      >
+                        {trim(account.path)}
+                      </Link>
+                    </td>
                     <td className="w-40">
                       <div>{account.name}</div>
                     </td>
-                    <td className="table-report__action w-56">
-                      <div className="flex justify-center items-center">2 SOL</div>
+                    <td className="w-40">
+                      {settings.keypairPath === account.path ? (
+                        <div className="flex justify-center items-center">
+                          <Lucide icon="CheckSquare" className="w-5 h-5 text-green-500" />
+                        </div>
+                      ) : (
+                        <div className="flex justify-center items-center">
+                          <Lucide icon="Minus" className="w-5 h-5 text-red-500" />
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -116,7 +129,7 @@ function Main() {
                 />
               </div>
               <div className="mt-3">
-                <label>Set as main account?</label>
+                <label>Override main account?</label>
                 <div className="form-switch mt-2">
                   <input
                     type="checkbox"

@@ -26,8 +26,7 @@
     "axios": "^1.6.5",
     "electron-store": "^8.1.0",
     "electron-updater": "^6.1.7",
-    "fast-toml": "^0.5.4",
-    "uuid": "^9.0.1"
+    "fast-toml": "^0.5.4"
   },
   "devDependencies": {
     "@ckeditor/ckeditor5-build-balloon": "^29.1.0",
@@ -136,6 +135,7 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^5.2.2",
+    "ulid": "^2.3.0",
     "unique-names-generator": "^4.7.1",
     "url-loader": "^4.1.1",
     "vite": "^5.0.11",

@@ -15,6 +15,12 @@
       "@renderer/*": [
         "src/renderer/src/*"
       ],
+      "@preload/*": [
+        "src/preload/*"
+      ],
+      "@/*": [
+        "src/renderer/src/*"
+      ],
       "@type/*": [
         "src/types/*"
       ],

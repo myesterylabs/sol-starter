@@ -1,21 +1,14 @@
 import * as $_ from 'lodash'
 
-import { Lucide, Tippy } from '@/base-components'
-import { useRef, useState } from 'react'
-
 import { faker as $f } from '@/utils'
 import { Link } from 'react-router-dom'
+import { Lucide } from '@/base-components'
 import classnames from 'classnames'
+import { savedStore } from '@/stores/saved-store'
+import { useRecoilValue } from 'recoil'
 
 function Main() {
-  const [salesReportFilter, setSalesReportFilter] = useState()
-  const importantNotesRef = useRef()
-  const prevImportantNotes = () => {
-    importantNotesRef.current.tns.goTo('prev')
-  }
-  const nextImportantNotes = () => {
-    importantNotesRef.current.tns.goTo('next')
-  }
+  const store = useRecoilValue(savedStore)
 
   return (
     <div className="grid grid-cols-12 gap-6">
@@ -47,7 +40,9 @@ function Main() {
                       <div className="flex">
                         <Lucide icon="Wallet" className="report-box__icon text-pending" />
                       </div>
-                      <div className="text-3xl font-medium leading-8 mt-6">3</div>
+                      <div className="text-3xl font-medium leading-8 mt-6">
+                        {store.accounts?.length}
+                      </div>
                       <div className="text-base text-slate-500 mt-1">Accounts</div>
                     </div>
                   </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 // import { Commands } from '@type/Command'
-import { solVersion as RsolVersion } from '@renderer/stores/installation'
+import { solVersion as RsolVersion } from '@/stores/installation'
 import Step1 from './Step1'
 import Step2 from './Step2'
 import { useRecoilValue } from 'recoil'
@@ -86,10 +86,7 @@ function Main() {
         </div>
         <>
           {step === 1 && (
-            <Step1
-              setStep1Complete={setStep1Complete}
-              parsedVersion={parsedVersion}
-            />
+            <Step1 setStep1Complete={setStep1Complete} parsedVersion={parsedVersion} />
           )}
           {step === 2 && <Step2 setStep2Complete={setStep2Complete} />}
           {/* {step === 3 && <Step3 solanaInstalled={solanaInstalled} />} */}

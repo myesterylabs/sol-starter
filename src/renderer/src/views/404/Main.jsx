@@ -1,12 +1,13 @@
-import DarkModeSwitcher from "@/components/dark-mode-switcher/Main";
-import dom from "@left4code/tw-starter/dist/js/dom";
-import errorIllustration from "@/assets/images/error-illustration.svg";
-import { useEffect } from "react";
+import DarkModeSwitcher from '@/components/dark-mode-switcher/Main'
+import { Link } from 'react-router-dom'
+import dom from '@left4code/tw-starter/dist/js/dom'
+import errorIllustration from '@/assets/images/error-illustration.svg'
+import { useEffect } from 'react'
 
 function Main() {
   useEffect(() => {
-    dom("body").removeClass("main").removeClass("login").addClass("error-page");
-  }, []);
+    dom('body').removeClass('main').removeClass('login').addClass('error-page')
+  }, [])
 
   return (
     <>
@@ -31,7 +32,7 @@ function Main() {
                 You may have mistyped the address or the page may have moved.
               </div>
               <button className="intro-x btn py-3 px-4 text-white border-white dark:border-darkmode-400 dark:text-slate-200 mt-10">
-              <a href='/'>Back to Home</a>
+                <Link to="/">Back to Home</Link>
               </button>
             </div>
           </div>
@@ -39,7 +40,7 @@ function Main() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default Main;
+export default Main

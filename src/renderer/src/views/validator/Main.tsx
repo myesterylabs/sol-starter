@@ -1,9 +1,9 @@
-import { Lucide, TabGroup } from '@renderer/base-components'
+import { Lucide, TabGroup } from '@/base-components'
 import { useEffect, useState } from 'react'
-import { validatorLogs, validatorStats, validatorStatus } from '@renderer/stores/validator'
+import { validatorLogs, validatorStats, validatorStatus } from '@/stores/validator'
 
-import { solVersion as RsolVersion } from '@renderer/stores/installation'
-import Terminal from '@renderer/components/terminal/Main.jsx'
+import { solVersion as RsolVersion } from '@/stores/installation'
+import Terminal from '@/components/terminal/Main.jsx'
 import { useRecoilValue } from 'recoil'
 
 const parseSolVersion = (str) => {

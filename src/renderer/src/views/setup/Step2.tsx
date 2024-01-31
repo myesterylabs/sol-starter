@@ -1,12 +1,12 @@
 import { CommandResult, Commands } from '@type/Command'
-import { solVersion as RsolVersion, solTrigger } from '@renderer/stores/installation'
+import { solVersion as RsolVersion, solTrigger } from '@/stores/installation'
 import { useEffect, useState } from 'react'
 import { useRecoilValue, useResetRecoilState } from 'recoil'
 
 import { CheckCircle2 } from 'lucide-react'
 import { Queries } from '@type/Queries'
 // import React from 'react'
-import Terminal from '@renderer/components/terminal/Main.jsx'
+import Terminal from '@/components/terminal/Main.jsx'
 
 /**
     @param {{solanaInstalled:boolean, parsedVersion: {cliVersion: string, src: string, feat:string,client: string }}} props

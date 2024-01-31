@@ -2,7 +2,7 @@ import { atom, selector } from 'recoil'
 import { getRecoil, setRecoil } from 'recoil-nexus'
 
 import { Topics } from '@type/Topic'
-import { v4 as uuidv4 } from 'uuid'
+import { ulid } from 'ulid'
 
 // import { Commands } from '@type/Command'
 
@@ -72,7 +72,7 @@ window.api.listen(Topics.STDOUT_STREAM, Topics.VALIDATOR, (val: string) => {
   setRecoil(validatorLogs, [
     ...oldLogs,
     {
-      id: uuidv4(),
+      id: ulid(),
       message: val
     }
   ])
