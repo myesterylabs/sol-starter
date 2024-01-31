@@ -1,4 +1,4 @@
-import { BrowserWindow, app, ipcMain, shell } from 'electron'
+import { BrowserWindow, app, dialog, ipcMain, shell } from 'electron'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 
 import { Command } from '../types/Command'
@@ -125,6 +125,17 @@ app.whenReady().then(() => {
     console.log('store sent to frontend')
     return store.store
   })
+  ipcMain.handle(Topics.OPEN_FOLDER, async () => {
+    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+      properties: ['openDirectory']
+    })
+    if (canceled) {
+      return
+    } else {
+      return filePaths[0]
+    }
+  })
+
   ipcMain.on(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, (_event, val: SavedStore) => {
     store.set(val)
   })
@@ -143,6 +154,6 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-
+// console.log(`${app.getPath('home')}/.config/solana/id.json`)
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.

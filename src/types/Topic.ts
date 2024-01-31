@@ -11,4 +11,5 @@ export enum Topics {
   STATUS = 'STATUS',
   SAVEDSTORE = 'SAVEDSTORE',
   UPDATE = 'UPDATE',
+  OPEN_FOLDER = 'OPEN_FOLDER'
 }

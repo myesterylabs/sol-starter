@@ -1,3 +1,4 @@
+import Account from '../views/account/Main'
 import Home from '../views/home/Main'
 import NotFound from '../views/404/Main'
 import Projects from '../views/projects/Main'
@@ -31,7 +32,7 @@ function Router() {
         },
         {
           path: '/accounts',
-          element: <Projects />
+          element: <Account />
         },
         {
           path: '/settings',

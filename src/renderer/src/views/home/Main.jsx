@@ -1,25 +1,10 @@
 import * as $_ from 'lodash'
 
-import {
-  Dropdown,
-  DropdownContent,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Litepicker,
-  Lucide,
-  TinySlider,
-  Tippy
-} from '@/base-components'
+import { Lucide, Tippy } from '@/base-components'
 import { useRef, useState } from 'react'
 
 import { faker as $f } from '@/utils'
-import ReportDonutChart from '@/components/report-donut-chart/Main'
-import ReportDonutChart1 from '@/components/report-donut-chart-1/Main'
-import ReportLineChart from '@/components/report-line-chart/Main'
-import ReportMap from '@/components/report-map/Main'
-import ReportPieChart from '@/components/report-pie-chart/Main'
-import SimpleLineChart1 from '@/components/simple-line-chart-1/Main'
+import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 
 function Main() {
@@ -43,86 +28,56 @@ function Main() {
             </div>
             <div className="grid grid-cols-12 gap-6 mt-5">
               <div className="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-                <div className="report-box zoom-in">
-                  <div className="box p-5">
-                    <div className="flex">
-                      <Lucide icon="Code" className="report-box__icon text-primary" />
-                      <div className="ml-auto cursor-pointer">
-                        <Tippy
-                          tag="div"
-                          className="report-box__indicator bg-success shadow-bg"
-                          content="33% Higher than last month"
-                        >
-                          33%
-                          <Lucide icon="Plus" className="w-4 h-4 ml-0.5" />
-                        </Tippy>
+                <Link to="/projects">
+                  <div className="report-box zoom-in relative">
+                    <div className="box p-5">
+                      <div className="flex">
+                        <Lucide icon="Code" className="report-box__icon text-primary" />
                       </div>
+                      <div className="text-3xl font-medium leading-8 mt-6">4</div>
+                      <div className="text-base text-slate-500 mt-1">Solana Projects</div>
                     </div>
-                    <div className="text-3xl font-medium leading-8 mt-6">4</div>
-                    <div className="text-base text-slate-500 mt-1">Solana Projects</div>
                   </div>
-                </div>
+                </Link>
               </div>
               <div className="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-                <div className="report-box zoom-in">
-                  <div className="box p-5">
-                    <div className="flex">
-                      <Lucide icon="Wallet" className="report-box__icon text-pending" />
-                      <div className="ml-auto">
-                        <Tippy
-                          tag="div"
-                          className="report-box__indicator bg-danger cursor-pointer"
-                          content="2% Lower than last month"
-                        >
-                          2%
-                          <Lucide icon="ChevronDown" className="w-4 h-4 ml-0.5" />
-                        </Tippy>
+                <Link to="/accounts">
+                  <div className="report-box zoom-in">
+                    <div className="box p-5">
+                      <div className="flex">
+                        <Lucide icon="Wallet" className="report-box__icon text-pending" />
                       </div>
+                      <div className="text-3xl font-medium leading-8 mt-6">3</div>
+                      <div className="text-base text-slate-500 mt-1">Accounts</div>
                     </div>
-                    <div className="text-3xl font-medium leading-8 mt-6">3</div>
-                    <div className="text-base text-slate-500 mt-1">Accounts</div>
                   </div>
-                </div>
+                </Link>
               </div>
               <div className="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-                <div className="report-box zoom-in">
-                  <div className="box p-5">
-                    <div className="flex">
-                      <Lucide icon="Monitor" className="report-box__icon text-warning" />
-                      <div className="ml-auto">
-                        <Tippy
-                          tag="div"
-                          className="report-box__indicator bg-success cursor-pointer"
-                          content="12% Higher than last month"
-                        >
-                          12% <Lucide icon="ChevronUp" className="w-4 h-4 ml-0.5" />
-                        </Tippy>
+                <Link to="/setup">
+                  <div className="report-box zoom-in">
+                    <div className="box p-5">
+                      <div className="flex">
+                        <Lucide icon="Monitor" className="report-box__icon text-warning" />
                       </div>
+                      <div className="text-3xl font-medium leading-8 mt-6">18.1</div>
+                      <div className="text-base text-slate-500 mt-1">Sol Version</div>
                     </div>
-                    <div className="text-3xl font-medium leading-8 mt-6">18.1</div>
-                    <div className="text-base text-slate-500 mt-1">Sol Version</div>
                   </div>
-                </div>
+                </Link>
               </div>
               <div className="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-                <div className="report-box zoom-in">
-                  <div className="box p-5">
-                    <div className="flex">
-                      <Lucide icon="User" className="report-box__icon text-success" />
-                      <div className="ml-auto">
-                        <Tippy
-                          tag="div"
-                          className="report-box__indicator bg-success cursor-pointer"
-                          content="22% Higher than last month"
-                        >
-                          22% <Lucide icon="ChevronUp" className="w-4 h-4 ml-0.5" />
-                        </Tippy>
+                <Link to="/validator">
+                  <div className="report-box zoom-in">
+                    <div className="box p-5">
+                      <div className="flex">
+                        <Lucide icon="User" className="report-box__icon text-success" />
                       </div>
+                      <div className="text-3xl font-medium leading-8 mt-6">52357</div>
+                      <div className="text-base text-slate-500 mt-1">Processed Transactions</div>
                     </div>
-                    <div className="text-3xl font-medium leading-8 mt-6">52357</div>
-                    <div className="text-base text-slate-500 mt-1">Processed Transactions</div>
                   </div>
-                </div>
+                </Link>
               </div>
             </div>
           </div>
@@ -291,9 +246,7 @@ function Main() {
                           <div className="text-slate-500 text-xs mt-0.5">{faker.dates[0]}</div>
                         </div>
 
-                        <div className="border-black">
-                          w
-                        </div>
+                        <div className="border-black">w</div>
                       </div>
                     </div>
                   </div>

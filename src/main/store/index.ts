@@ -22,6 +22,10 @@ const schema: Store.Schema<SavedStore> = {
     type: 'string',
     format: 'uri',
     default: 'ws://127.0.0.1:8900'
+  },
+  accounts: {
+    type: 'array',
+    default: []
   }
 }
 
