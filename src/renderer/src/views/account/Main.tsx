@@ -25,6 +25,7 @@ function Main() {
   const [mainAccount, setMainAccount] = useState(false)
   const store = useRecoilValue(savedStore)
 
+
   useEffect(() => {
     const shortName = uniqueNamesGenerator({
       dictionaries: [adjectives, animals, colors],
@@ -140,6 +141,7 @@ function Main() {
                 </button>
                 <button
                   onClick={() => {
+                    window.api.createAccount(accountName, mainAccount)
                     setCreationModal(false)
                   }}
                   type="button"

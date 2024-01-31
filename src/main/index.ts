@@ -1,16 +1,17 @@
 import { BrowserWindow, app, dialog, ipcMain, shell } from 'electron'
+import { FileSystemWallet, SavedStore } from '../types/Store'
+import { RunCommand, createAccount } from './commands'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 
 import { Command } from '../types/Command'
 import { Query } from '../types/Queries'
-import { RunCommand } from './commands'
 import RunQuery from './queries'
-import { SavedStore } from '../types/Store'
 import { Topics } from '../types/Topic'
 import icon from '../../resources/icon.png?asset'
 import { join } from 'path'
 import { spawn } from 'child_process'
 import { store } from './store/index'
+import { v4 } from 'uuid'
 
 let mainWindow: BrowserWindow
 function createWindow(): void {
@@ -135,6 +136,28 @@ app.whenReady().then(() => {
       return filePaths[0]
     }
   })
+  ipcMain.handle(Topics.CREATE_ACCOUNT, (_event, name: string, override: boolean) => {
+    let outfile: string | null = null
+    if (!override) {
+      outfile = `${app.getPath('home')}/.config/solana/id-${v4()}.json`
+    }
+    let res = createAccount(outfile, override)
+
+    if (res?.success ) {
+      store.set('accounts', [
+        ...(store.get('accounts') || ([] as Array<FileSystemWallet>)),
+        {
+          name,
+          path: outfile || `${app.getPath('home')}/.config/solana/id.json`,
+          recoveryPhrase: res.seedPhrase,
+          created_at: new Date().toISOString(),
+          publicKey: res.pubKey
+        }
+      ])
+    }
+
+    return res
+  })
 
   ipcMain.on(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, (_event, val: SavedStore) => {
     store.set(val)
@@ -154,6 +177,6 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
-// console.log(`${app.getPath('home')}/.config/solana/id.json`)
+
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.

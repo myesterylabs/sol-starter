@@ -49,4 +49,47 @@ export const RunCommand = (
   }
 }
 
+export const createAccount = (
+  outfile: string | null,
+  override: boolean
+): { stderr: string; stdout: string; success: boolean } & {
+  pubKey?: string | null
+  seedPhrase?: string | null
+} => {
+  try {
+    // Replace 'ls -l' with your command
+    const output = execSync(
+      `solana-keygen new --no-passphrase ${outfile ? '-o ' + outfile : ''} ${override ? '--force' : ''}`,
+      { encoding: 'utf-8' }
+    )
+    const pubkeyRegex = /pubkey: (\w+)/
+    const seedPhraseRegex = /Save this seed phrase to recover your new keypair:\n(.+)/
+
+    // Extract pubkey and seed phrase from the string
+    const pubkeyMatch = output.match(pubkeyRegex)
+    const seedPhraseMatch = output.match(seedPhraseRegex)
+
+    // Create a JSON object
+    const result = {
+      pubKey: pubkeyMatch ? pubkeyMatch[1] : null,
+      seedPhrase: seedPhraseMatch ? seedPhraseMatch[1].trim() : null
+    }
+
+    // Log the JSON result
+    console.log(result)
+    return {
+      stderr: '',
+      stdout: output,
+      success: true,
+      ...result
+    }
+  } catch (error) {
+    return {
+      stderr: error as string,
+      stdout: '',
+      success: false
+    }
+  }
+}
+
 export default RunCommand

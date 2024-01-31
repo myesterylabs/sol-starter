@@ -24,6 +24,7 @@ const api = {
     ipcRenderer.invoke(Topics.IS_VALIDATOR_RUNNING) as Promise<boolean>,
   fetchSavedStore: (): Promise<SavedStore> => ipcRenderer.invoke(Topics.SAVEDSTORE),
   openFolder: (): Promise<string> => ipcRenderer.invoke(Topics.OPEN_FOLDER),
+  createAccount: (name: string, override:boolean) => ipcRenderer.invoke(Topics.CREATE_ACCOUNT, name, override)
 }
 
 export type APIType = typeof api
