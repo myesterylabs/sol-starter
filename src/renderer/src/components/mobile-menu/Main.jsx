@@ -1,16 +1,17 @@
-import { Transition } from "react-transition-group";
-import { useState, useEffect } from "react";
+import { enter, leave, linkTo, toggleMobileMenu } from "./index";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import { helper as $h } from "@/utils";
-import { sideMenu as useSideMenuStore } from "@/stores/side-menu";
-import { useRecoilValue } from "recoil";
-import { nestedMenu } from "@/layouts/side-menu";
-import { toggleMobileMenu, linkTo, enter, leave } from "./index";
 import { Lucide } from "@/base-components";
-import logoUrl from "@/assets/images/logo.svg";
+import SimpleBar from "simplebar";
+import { Transition } from "react-transition-group";
 import classnames from "classnames";
 import dom from "@left4code/tw-starter/dist/js/dom";
-import SimpleBar from "simplebar";
+import logoUrl from "@/assets/images/logo.svg";
+import { nestedMenu } from "@/layouts/side-menu";
+import { useRecoilValue } from "recoil";
+import { sideMenu as useSideMenuStore } from "@/stores/side-menu";
 
 function Main(props) {
   const navigate = useNavigate();
@@ -34,10 +35,10 @@ function Main(props) {
           "mobile-menu--active": activeMobileMenu,
         })}
       >
-        <div className="mobile-menu-bar">
+        <div className="mobile-menu-bar fixed">
           <a href="" className="flex mr-auto">
             <img
-              alt="Midone Tailwind HTML Admin Template"
+              alt="Logo"
               className="w-6"
               src={logoUrl}
             />

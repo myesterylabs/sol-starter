@@ -22,9 +22,11 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.0",
     "@electron-toolkit/utils": "^3.0.0",
+    "@solana/web3.js": "^1.89.1",
     "axios": "^1.6.5",
     "electron-store": "^8.1.0",
     "electron-updater": "^6.1.7",
+    "fast-toml": "^0.5.4",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

@@ -1,5 +1,7 @@
 import Home from '../views/home/Main'
 import NotFound from '../views/404/Main'
+import Projects from '../views/projects/Main'
+import Settings from '../views/settings/Main'
 // import Petupage2 from "../views/page-2/Main";
 import Setup from '../views/setup/Main'
 import SideMenu from '../layouts/side-menu/Main'
@@ -22,7 +24,20 @@ function Router() {
         {
           path: '/validator',
           element: <Validator />
+        },
+        {
+          path: '/projects',
+          element: <Projects />
+        },
+        {
+          path: '/accounts',
+          element: <Projects />
+        },
+        {
+          path: '/settings',
+          element: <Settings />
         }
+
       ]
     },
     {
