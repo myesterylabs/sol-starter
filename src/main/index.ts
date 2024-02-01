@@ -160,6 +160,11 @@ app.whenReady().then(() => {
     return res
   })
 
+  ipcMain.handle(Topics.SETTINGS, () => {
+    let settings = sendSettings()
+    return settings
+  })
+
   ipcMain.on(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, (_event, val: SavedStore) => {
     store.set(val)
   })

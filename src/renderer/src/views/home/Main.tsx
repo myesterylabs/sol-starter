@@ -1,5 +1,7 @@
 import * as $_ from 'lodash'
 
+import { parsedVersion, solVersion } from '@renderer/stores/installation'
+
 import { faker as $f } from '@/utils'
 import { Link } from 'react-router-dom'
 import { Lucide } from '@/base-components'
@@ -9,7 +11,8 @@ import { useRecoilValue } from 'recoil'
 
 function Main() {
   const store = useRecoilValue(savedStore)
-
+  const SolVersion = useRecoilValue(solVersion)
+  const ParsedVersion = useRecoilValue(parsedVersion)
   return (
     <div className="grid grid-cols-12 gap-6">
       <div className="col-span-12 2xl:col-span-9">
@@ -27,7 +30,9 @@ function Main() {
                       <div className="flex">
                         <Lucide icon="Code" className="report-box__icon text-primary" />
                       </div>
-                      <div className="text-3xl font-medium leading-8 mt-6">4</div>
+                      <div className="text-3xl font-medium leading-8 mt-6">
+                        {store.projects?.length}
+                      </div>
                       <div className="text-base text-slate-500 mt-1">Solana Projects</div>
                     </div>
                   </div>
@@ -55,7 +60,9 @@ function Main() {
                       <div className="flex">
                         <Lucide icon="Monitor" className="report-box__icon text-warning" />
                       </div>
-                      <div className="text-3xl font-medium leading-8 mt-6">18.1</div>
+                      <div className="text-3xl font-medium leading-8 mt-6">
+                        {ParsedVersion.cliVersion}
+                      </div>
                       <div className="text-base text-slate-500 mt-1">Sol Version</div>
                     </div>
                   </div>
@@ -144,12 +151,12 @@ function Main() {
               </table>
             </div>
             <div className="w-full">
-              <a
-                href=""
+              <Link
+                to="/projects"
                 className="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500"
               >
                 View More
-              </a>
+              </Link>
             </div>
           </div>
           {/* END: Recent Solana Projects */}
@@ -164,37 +171,36 @@ function Main() {
                 <h2 className="text-lg font-medium truncate mr-5">Accounts</h2>
               </div>
               <div className="mt-5">
-                {$_.take($f(), 5).map((faker, fakerKey) => (
-                  <div key={fakerKey} className="intro-x">
-                    <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div className="ml-4 mr-auto">
-                        <div className="font-medium text-xs">
-                          GorRLZ1mfhjUyFdd6ntZhimXypux27RBzcSumRUqSLL
+                {store.accounts
+                  ?.filter((_, i) => i < 5)
+                  .map((account) => (
+                    <div key={account.path} className="intro-x">
+                      <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
+                        <div className="ml-4 mr-auto">
+                          <div className="font-medium text-xs">
+                            <Link
+                              to={`/accounts/${account.publicKey}`}
+                              className="font-medium whitespace-nowrap text-xs"
+                            >
+                              {account.publicKey}
+                            </Link>
+                          </div>
+                          <div className="text-slate-500 text-xs mt-0.5 flex gap-2">
+                            <span className="block">
+                              <Lucide icon="Copy" className="text-success" />
+                            </span>
+                            <span className="block">{account.name}</span>
+                          </div>
                         </div>
-                        <div className="text-slate-500 text-xs mt-0.5 flex gap-2">
-                          <span className="block">
-                            <Lucide icon="Copy" className="text-success" />
-                          </span>
-                          <span className="block">Account 1</span>
-                        </div>
-                      </div>
-                      <div
-                        className={classnames({
-                          'text-success': faker.trueFalse[0],
-                          'text-danger': !faker.trueFalse[0]
-                        })}
-                      >
-                        2 SOL
                       </div>
                     </div>
-                  </div>
-                ))}
-                <a
-                  href=""
+                  ))}
+                <Link
+                  to="/accounts"
                   className="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500"
                 >
                   View More
-                </a>
+                </Link>
               </div>
             </div>
             {/* END: Accounts */}
@@ -217,12 +223,12 @@ function Main() {
                     </div>
                   </div>
                 ))}
-                <a
-                  href=""
+                <Link
+                  to="/validator"
                   className="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500"
                 >
                   View More
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -232,26 +238,81 @@ function Main() {
                 <h2 className="text-lg font-medium truncate mr-5">Milestones</h2>
               </div>
               <div className="mt-5">
-                {$_.take($f(), 5).map((faker, fakerKey) => (
-                  <div key={fakerKey} className="intro-x">
-                    <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div className="flex justify-between w-full">
-                        <div className="ml-4 mr-auto">
-                          <div className="font-medium">Install Rust</div>
-                          <div className="text-slate-500 text-xs mt-0.5">{faker.dates[0]}</div>
-                        </div>
+                <div className="intro-x">
+                  <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
+                    <div className="flex justify-between w-full">
+                      <div className="ml-4 mr-auto">
+                        <div className="font-medium">Install Rust</div>
+                        <div className="text-slate-500 text-xs mt-0.5">pending</div>
+                      </div>
 
-                        <div className="border-black">w</div>
+                      <div className="border-black">
+                        <Lucide icon="CheckSquare" className="w-5 h-5 mt-2 text-green-500" />
                       </div>
                     </div>
                   </div>
-                ))}
-                <a
-                  href=""
-                  className="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500"
-                >
-                  View More
-                </a>
+                </div>
+
+                <div className="intro-x">
+                  <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
+                    <div className="flex justify-between w-full">
+                      <div className="ml-4 mr-auto">
+                        <div className="font-medium">Install Solana CLI</div>
+                        <div className="text-slate-500 text-xs mt-0.5">
+                          {SolVersion.success ? 'completed' : 'pending'}
+                        </div>
+                      </div>
+
+                      <div className="border-black">
+                        {SolVersion.success ? (
+                          <Lucide icon="CheckSquare" className="w-5 h-5 mt-2 text-green-500" />
+                        ) : (
+                          <Lucide icon="Loader" className="w-5 h-5 mt-2 text-warning" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="intro-x">
+                  <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
+                    <div className="flex justify-between w-full">
+                      <div className="ml-4 mr-auto">
+                        <div className="font-medium">Create Accounts</div>
+                        <div className="text-slate-500 text-xs mt-0.5">
+                          {store.accounts?.length ? 'completed' : 'pending'}
+                        </div>
+                      </div>
+
+                      <div className="border-black">
+                        {store.accounts?.length ? (
+                          <Lucide icon="CheckSquare" className="w-5 h-5 mt-2 text-green-500" />
+                        ) : (
+                          <Lucide icon="Loader" className="w-5 h-5 mt-2 text-warning" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="intro-x">
+                  <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
+                    <div className="flex justify-between w-full">
+                      <div className="ml-4 mr-auto">
+                        <div className="font-medium">Create Projects</div>
+                        <div className="text-slate-500 text-xs mt-0.5">pending</div>
+                      </div>
+
+                      <div className="border-black">
+                        {store.projects?.length ? (
+                          <Lucide icon="CheckSquare" className="w-5 h-5 mt-2 text-green-500" />
+                        ) : (
+                          <Lucide icon="Loader" className="w-5 h-5 mt-2 text-warning" />
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

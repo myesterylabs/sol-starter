@@ -4,6 +4,7 @@ export type SavedStore = {
   json_rpc_url: string;
   ws_url: string;
   accounts?: Array<FileSystemWallet>;
+  projects?: Array<SolProject>;
 }
 
 export type FileSystemWallet = {
@@ -12,4 +13,9 @@ export type FileSystemWallet = {
   recoveryPhrase: string;
   created_at: string;
   publicKey: string;
+}
+
+export type SolProject = {
+  name: string;
+  path: string;
 }

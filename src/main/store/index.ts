@@ -26,6 +26,10 @@ const schema: Store.Schema<SavedStore> = {
   accounts: {
     type: 'array',
     default: []
+  },
+  projects: {
+    type: 'array',
+    default: []
   }
 }
 

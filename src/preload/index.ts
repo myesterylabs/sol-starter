@@ -5,6 +5,7 @@ import { Query } from '../types/Queries'
 import { SavedStore } from '../types/Store'
 import { Topics } from '../types/Topic'
 import { electronAPI } from '@electron-toolkit/preload'
+import { SolanaConfig } from '../types/SolSettings'
 
 // Custom APIs for renderer
 const api = {
@@ -23,6 +24,7 @@ const api = {
   isValidatorRunning: (): Promise<boolean> =>
     ipcRenderer.invoke(Topics.IS_VALIDATOR_RUNNING) as Promise<boolean>,
   fetchSavedStore: (): Promise<SavedStore> => ipcRenderer.invoke(Topics.SAVEDSTORE),
+  fetchSettings: (): Promise<SolanaConfig> => ipcRenderer.invoke(Topics.SETTINGS),
   openFolder: (path): Promise<string> => ipcRenderer.invoke(Topics.OPEN_FOLDER,path),
   createAccount: (name: string, override:boolean) => ipcRenderer.invoke(Topics.CREATE_ACCOUNT, name, override)
 }
