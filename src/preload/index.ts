@@ -1,5 +1,5 @@
 import { Command, CommandResult } from '../types/Command'
-import { SavedStore, SolProgram } from '../types/Store'
+import { FileSystemWallet, SavedStore, SolProgram } from '../types/Store'
 import { contextBridge, ipcRenderer } from 'electron'
 
 import { Query } from '../types/Queries'
@@ -41,7 +41,11 @@ const api = {
         last_modified: string
       }
     >,
-  deleteProgram: (id: string) => ipcRenderer.invoke(Topics.DELETE_PROGRAM, id) as Promise<boolean>
+  deleteProgram: (id: string) => ipcRenderer.invoke(Topics.DELETE_PROGRAM, id) as Promise<boolean>,
+  getAccountDetails: (id: string) => ipcRenderer.invoke(Topics.GET_ACCOUNT_DETAILS, id) as Promise<FileSystemWallet & {
+    balance: string
+  }>,
+  airdrop: (id: string, amount: number) => ipcRenderer.invoke(Topics.AIRDROP, id, amount) as Promise<boolean>,
 }
 
 export type APIType = typeof api

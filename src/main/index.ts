@@ -3,7 +3,7 @@ import { FileSystemWallet, SavedStore, SolProgram } from '../types/Store'
 import { RunCommand, createAccount, createProgram } from './commands'
 import RunQuery, { sendSettings } from './queries'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
-import { exec, spawn } from 'child_process'
+import { exec, execSync, spawn } from 'child_process'
 
 import { Command } from '../types/Command'
 import { Query } from '../types/Queries'
@@ -148,13 +148,34 @@ app.whenReady().then(() => {
       return null
     }
     // load details like amount of files, last modified, version
-    let no_of_files = await fsp.readdir(program.path);
-    let last_modified = (await fsp.stat(program.path)).mtime;
+    let no_of_files = await fsp.readdir(program.path)
+    let last_modified = (await fsp.stat(program.path)).mtime
 
     return {
       ...program,
       no_of_files: no_of_files.length,
       last_modified: last_modified.toDateString()
+    }
+  })
+
+  ipcMain.handle(Topics.GET_ACCOUNT_DETAILS, (_event, id: string) => {
+    // if validator is off, switch on
+    if (!isValidatorRunning()) {
+      runValidator()
+    }
+    let accounts = store.get('accounts') as Array<FileSystemWallet>
+    let account = accounts.find((a) => a.publicKey === id)
+    if (!account) {
+      return null
+    }
+    // get balance using solana cli
+    // command should look like solana balance 9Gz7x9hqcshJsMmu3PUMWaSsraH51Sqotj91wnHsQzNh --url=http://localhost:8899
+    let command = `solana balance ${account.publicKey} --url=${store.store.json_rpc_url}`
+    let balance = (execSync(command)).toString()
+
+    return {
+      ...account,
+      balance: balance
     }
   })
 
@@ -198,6 +219,27 @@ app.whenReady().then(() => {
     return res
   })
 
+  ipcMain.handle(Topics.AIRDROP, async (_event, id: string, amount: number) => {
+    let accounts = store.get('accounts') as Array<FileSystemWallet>
+    let account = accounts.find((a) => a.publicKey === id)
+    if (!account) {
+      return false
+    }
+    // if validator is off, switch on
+    if (!isValidatorRunning()) {
+      runValidator()
+    }
+    // airdrop using solana cli
+    // command should look like solana airdrop 1 9Gz7x9hqcshJsMmu3PUMWaSsraH51Sqotj91wnHsQzNh --url=http://localhost:8899
+    let command = `solana airdrop ${amount} ${account.publicKey} --url=${store.store.json_rpc_url}`
+    try {
+      execSync(command)
+    } catch (error) {
+      return false
+    }
+    return true
+  })
+
   ipcMain.handle(Topics.SETTINGS, () => {
     let settings = sendSettings()
     return settings
@@ -230,9 +272,12 @@ app.whenReady().then(() => {
     return true
   })
 
-  ipcMain.handle(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, (_event, key: keyof SavedStore, val: any) => {
-    store.set(key, val)
-  })
+  ipcMain.handle(
+    `${Topics.SAVEDSTORE}:${Topics.UPDATE}`,
+    (_event, key: keyof SavedStore, val: any) => {
+      store.set(key, val)
+    }
+  )
   store.onDidAnyChange(() => {
     mainWindow.webContents.send(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, store.store)
   })

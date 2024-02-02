@@ -3,9 +3,9 @@ import Home from '../views/home/Main'
 import NotFound from '../views/404/Main'
 import Programs from '../views/programs/Main'
 import Settings from '../views/settings/Main'
-// import Petupage2 from "../views/page-2/Main";
 import Setup from '../views/setup/Main'
 import SideMenu from '../layouts/side-menu/Main'
+import SingleAccount from '../views/account/Single'
 import SingleProgram from '../views/programs/Single'
 import Validator from '../views/validator/Main'
 import { useRoutes } from 'react-router-dom'
@@ -38,6 +38,10 @@ function Router() {
         {
           path: '/accounts',
           element: <Account />
+        },
+        {
+          path: '/accounts/:id',
+          element: <SingleAccount />
         },
         {
           path: '/settings',

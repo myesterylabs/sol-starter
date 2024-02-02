@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { SolProgram } from '@type/Store'
 
 function Main() {
-  const [newOrderModal, setNewOrderModal] = useState(false)
   const [projectDetails, setProjectDetails] = useState(
     {} as SolProgram & {
       last_modified: string

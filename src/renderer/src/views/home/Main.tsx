@@ -1,8 +1,5 @@
-import * as $_ from 'lodash'
+import { parsedVersion, rustVersion, solVersion } from '@renderer/stores/installation'
 
-import { parsedVersion, solVersion } from '@renderer/stores/installation'
-
-import { faker as $f } from '@/utils'
 import { Link } from 'react-router-dom'
 import { Lucide } from '@/base-components'
 import classnames from 'classnames'
@@ -12,6 +9,7 @@ import { useRecoilValue } from 'recoil'
 function Main() {
   const store = useRecoilValue(savedStore)
   const SolVersion = useRecoilValue(solVersion)
+  const RustVersion = useRecoilValue(rustVersion)
   const ParsedVersion = useRecoilValue(parsedVersion)
   return (
     <div className="grid grid-cols-12 gap-6">
@@ -98,9 +96,9 @@ function Main() {
                 </Link>
 
                 <Link to="/accounts?openModal=true">
-                <button className="ml-3 btn box flex items-center text-slate-600 dark:text-slate-300">
-                  <Lucide icon="Plus" className="hidden sm:block w-4 h-4 mr-2" />
-                  Create Account
+                  <button className="ml-3 btn box flex items-center text-slate-600 dark:text-slate-300">
+                    <Lucide icon="Plus" className="hidden sm:block w-4 h-4 mr-2" />
+                    Create Account
                   </button>
                 </Link>
               </div>
@@ -262,11 +260,17 @@ function Main() {
                     <div className="flex justify-between w-full">
                       <div className="ml-4 mr-auto">
                         <div className="font-medium">Install Rust</div>
-                        <div className="text-slate-500 text-xs mt-0.5">pending</div>
+                        <div className="text-slate-500 text-xs mt-0.5">
+                          {RustVersion.success ? 'completed' : 'pending'}
+                        </div>
                       </div>
 
                       <div className="border-black">
-                        <Lucide icon="CheckSquare" className="w-5 h-5 mt-2 text-green-500" />
+                        {RustVersion.success ? (
+                          <Lucide icon="CheckSquare" className="w-5 h-5 mt-2 text-green-500" />
+                        ) : (
+                          <Lucide icon="Loader" className="w-5 h-5 mt-2 text-warning" />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -319,7 +323,9 @@ function Main() {
                     <div className="flex justify-between w-full">
                       <div className="ml-4 mr-auto">
                         <div className="font-medium">Create Programs</div>
-                        <div className="text-slate-500 text-xs mt-0.5">pending</div>
+                        <div className="text-slate-500 text-xs mt-0.5">
+                          {store.programs?.length ? 'completed' : 'pending'}
+                        </div>
                       </div>
 
                       <div className="border-black">

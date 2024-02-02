@@ -2,14 +2,14 @@ import { atom, selector } from "recoil";
 
 const darkModeValue = atom({
   key: "darkModeValue",
-  default: localStorage.getItem("darkMode") === "true",
+  default: localStorage.getItem("darkMode") !== "true",
 });
 
 const darkMode = selector({
   key: "darkMode",
   get: ({ get }) => {
     if (localStorage.getItem("darkMode") === null) {
-      localStorage.setItem("darkMode", false);
+      localStorage.setItem("darkMode", true);
     }
 
     return get(darkModeValue);

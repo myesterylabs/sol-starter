@@ -61,7 +61,7 @@ function Main() {
                   <tr key={account.publicKey} className="intro-x">
                     <td>
                       <Link
-                        to="`/accounts/${account.publicKey}`"
+                        to={`/accounts/${account.publicKey}`}
                         className="font-medium whitespace-nowrap text-xs xl:text-sm"
                       >
                         {account.publicKey}
