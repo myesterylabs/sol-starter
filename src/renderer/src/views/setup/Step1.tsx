@@ -12,8 +12,8 @@ import { useRecoilValue } from 'recoil'
     @param {{solanaInstalled:boolean, parsedVersion: {cliVersion: string, src: string, feat:string,client: string }}} props
  */
 export function Step1({ parsedVersion, setStep1Complete }) {
-  const [downloading, setDownloading] = useState(false)
   const [downloadProgress, setDownloadProgress] = useState(0)
+  const [downloading, setDownloading] = useState(false)
   const [downloaded, setDownloaded] = useState(false)
   // const [solanaInstalled, setSolanaInstalled] = useState(false)
   const solVersion = useRecoilValue(RsolVersion)

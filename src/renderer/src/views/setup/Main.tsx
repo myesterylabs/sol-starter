@@ -5,6 +5,7 @@ import { solVersion as RsolVersion } from '@/stores/installation'
 import Step1 from './Step1'
 import Step2 from './Step2'
 import { useRecoilValue } from 'recoil'
+import Step3 from './Step3'
 
 /**
  * @returns {{cliVersion: string, src: string, feat:string,client: string }} The result of the operation.
@@ -26,9 +27,10 @@ function Main() {
   let [parsedVersion, setParsedVersion] = useState({})
   let [step1Complete, setStep1Complete] = useState(false)
   let [step2Complete, setStep2Complete] = useState(false)
+  let [step3Complete, setStep3Complete] = useState(false)
   let [step, setStep] = useState(1)
   const increaseStep = () => {
-    if (step < 2) {
+    if (step < 3) {
       setStep(step + 1)
     }
   }
@@ -75,21 +77,22 @@ function Main() {
           >
             2
           </button>
-          {/* <button
+          <button
             className={`intro-y w-10 h-10 rounded-full btn ${
               step === 3 ? 'btn-primary' : 'bg-slate-100 text-slate-500'
             } mx-2`}
             onClick={() => setStep(3)}
+            disabled={!step2Complete}
           >
             3
-          </button> */}
+          </button>
         </div>
         <>
           {step === 1 && (
             <Step1 setStep1Complete={setStep1Complete} parsedVersion={parsedVersion} />
           )}
-          {step === 2 && <Step2 setStep2Complete={setStep2Complete} />}
-          {/* {step === 3 && <Step3 solanaInstalled={solanaInstalled} />} */}
+          {step === 2 && <Step2 />}
+          {step === 3 && <Step3 />}
         </>
       </div>
       <div className="intro-y col-span-12 flex items-center justify-center sm:justify-end mt-5">

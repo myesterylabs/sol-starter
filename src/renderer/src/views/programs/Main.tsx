@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import classnames from 'classnames'
 import { savedStore } from '@renderer/stores/saved-store'
 import { useRecoilValue } from 'recoil'
+import { Link } from 'react-router-dom'
 
 function Main() {
   const [accountName, setAccountName] = useState('')
@@ -14,7 +15,7 @@ function Main() {
   // check if a query param called openModal is set to true
   const openModal = window.location.search.match(/openModal=(?<openModal>\w+)/)?.groups || {}
   const [creationModal, setCreationModal] = useState(openModal?.openModal === 'true')
-  
+
   useEffect(() => {
     const shortName = uniqueNamesGenerator({
       dictionaries: [adjectives, animals, colors],
@@ -54,9 +55,9 @@ function Main() {
               {store.programs?.map((program) => (
                 <tr key={program.id} className="intro-x">
                   <td>
-                    <a href="" className="font-medium whitespace-nowrap">
+                    <Link to={'/programs/' + program.id} className="font-medium whitespace-nowrap">
                       {program.name}
-                    </a>
+                    </Link>
                     <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">V 0.0.1</div>
                   </td>
                   <td className="text-center">

@@ -4,6 +4,7 @@ import { validatorLogs, validatorStats, validatorStatus } from '@/stores/validat
 
 import { solVersion as RsolVersion } from '@/stores/installation'
 import Terminal from '@/components/terminal/Main.jsx'
+import { savedStore } from '@renderer/stores/saved-store'
 import { solSettings } from '@renderer/stores/sol-settings'
 import { useRecoilValue } from 'recoil'
 
@@ -21,6 +22,7 @@ const parseSolVersion = (str) => {
 }
 
 function Main() {
+  const store = useRecoilValue(savedStore)
   // const reset = useResetRecoilState(valTrigger)
   const solVersion = useRecoilValue(RsolVersion)
   let [parsedVersion, setParsedVersion] = useState({} as ReturnType<typeof parseSolVersion>)
@@ -63,7 +65,7 @@ function Main() {
               <div className="font-medium text-center lg:text-left lg:mt-3">Validator Details</div>
               <div className="flex flex-col justify-center items-center lg:items-start mt-4">
                 <div className="truncate sm:whitespace-normal flex items-center">
-                <span className="block mr-2 font-medium">RPC :</span>
+                  <span className="block mr-2 font-medium">RPC :</span>
                   <a target="_blank" href={SolSettings.rpcUrl}>
                     {SolSettings.rpcUrl}
                   </a>
@@ -76,7 +78,7 @@ function Main() {
 
                   <a href={SolSettings.webSocketUrl}>{SolSettings.webSocketUrl}</a>
                 </div>
-                
+
                 <div className="truncate sm:whitespace-normal flex items-center mt-3">
                   <Lucide icon="BarChart" className="w-4 h-4 mr-2" />
                   {(running && <span className="text-green-500">Running</span>) || (
@@ -87,15 +89,21 @@ function Main() {
             </div>
             <div className="mt-6 lg:mt-0 flex-1 flex items-center justify-center px-5 border-t lg:border-0 border-slate-200/60 dark:border-darkmode-400 pt-5 lg:pt-0">
               <div className="text-center rounded-md w-20 py-3">
-                <div className="font-medium text-primary text-xl">{parsedLog.processed || 0}</div>
+                <div className="font-medium text-primary text-xl">
+                  {parsedLog.processed || store.last_block || 0}
+                </div>
                 <div className="text-slate-500">Processed</div>
               </div>
               <div className="text-center rounded-md w-20 py-3">
-                <div className="font-medium text-primary text-xl">{parsedLog.confirmed || 0}</div>
+                <div className="font-medium text-primary text-xl">
+                  {parsedLog.confirmed || store.last_block || 0}
+                </div>
                 <div className="text-slate-500">Confirmed</div>
               </div>
               <div className="text-center rounded-md w-20 py-3">
-                <div className="font-medium text-primary text-xl">{parsedLog.finalized || 0}</div>
+                <div className="font-medium text-primary text-xl">
+                  {parsedLog.finalized || store.last_block || 0}
+                </div>
                 <div className="text-slate-500">Finalized</div>
               </div>
             </div>

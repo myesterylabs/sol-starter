@@ -1,8 +1,8 @@
 import { Command, CommandResult } from '../types/Command'
+import { SavedStore, SolProgram } from '../types/Store'
 import { contextBridge, ipcRenderer } from 'electron'
 
 import { Query } from '../types/Queries'
-import { SavedStore } from '../types/Store'
 import { SolanaConfig } from '../types/SolSettings'
 import { Topics } from '../types/Topic'
 import { electronAPI } from '@electron-toolkit/preload'
@@ -33,7 +33,15 @@ const api = {
     ipcRenderer.invoke(Topics.CREATE_PROGRAM, name, path) as Promise<boolean>,
   code: (path: string): Promise<string> => ipcRenderer.invoke(Topics.CODE, path),
   updateStore: (key: keyof SavedStore, value: any) =>
-    ipcRenderer.invoke(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, key, value)
+    ipcRenderer.invoke(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, key, value),
+  getProgramDetails: (id: string) =>
+    ipcRenderer.invoke(Topics.GET_PROGRAM_DETAILS, id) as Promise<
+      SolProgram & {
+        no_of_files: number
+        last_modified: string
+      }
+    >,
+  deleteProgram: (id: string) => ipcRenderer.invoke(Topics.DELETE_PROGRAM, id) as Promise<boolean>
 }
 
 export type APIType = typeof api

@@ -6,6 +6,7 @@ import Settings from '../views/settings/Main'
 // import Petupage2 from "../views/page-2/Main";
 import Setup from '../views/setup/Main'
 import SideMenu from '../layouts/side-menu/Main'
+import SingleProgram from '../views/programs/Single'
 import Validator from '../views/validator/Main'
 import { useRoutes } from 'react-router-dom'
 function Router() {
@@ -28,7 +29,11 @@ function Router() {
         },
         {
           path: '/programs',
-          element: <Programs />
+          element: <Programs />,
+        },
+        {
+          path: '/programs/:id',
+          element: <SingleProgram />
         },
         {
           path: '/accounts',

@@ -20,6 +20,11 @@ const parsedVersion = atom({
   }
 })
 
+const parsedRustVersion = atom({
+  key: 'parsedRustVersion',
+  default: null as number | null
+})
+
 const parseSolVersion = (str) => {
   let cliVersion = /\d+\.\d+\.\d+/.exec(str) as Array<any>
   let src = /src:.+;/.exec(str) as Array<any>
@@ -30,6 +35,21 @@ const parseSolVersion = (str) => {
     src: src[0].replace('src:', '').replace(';', ''),
     feat: feat[0].replace('feat:', '').replace(',', ''),
     client: client[0].replace('client:', '').replace(')', '')
+  }
+}
+
+const parseRustVersion = (str): number | null => {
+  // Regular expression to match the version number
+  const versionRegex = /cargo (\d+\.\d+\.\d+)/
+
+  // Match the version using the regular expression
+  const match = str.match(versionRegex)
+
+  // Check if a match is found
+  if (match && match[1]) {
+    return match[1]
+  } else {
+    return null
   }
 }
 
@@ -53,4 +73,24 @@ const solVersion = selector({
   }
 })
 
-export { solVersion, solTrigger, parsedVersion}
+const rustVersion = selector({
+  key: 'rustVersion',
+  get: async ({ get }) => {
+    get(solTrigger)
+    let res = await window.api.runCommand({
+      command: Commands.CHECK_RUST_INSTALLATION,
+      channel: Commands.CHECK_RUST_INSTALLATION,
+      async: false
+    })
+    if (res?.success) {
+      let parsed = parseRustVersion(res.stdout)
+      setRecoil(parsedRustVersion, parsed)
+    }
+    if (res == null) {
+      throw new Error('Could not determine version')
+    }
+    return res
+  }
+})
+
+export { solVersion, solTrigger, parsedVersion, parsedRustVersion, rustVersion }

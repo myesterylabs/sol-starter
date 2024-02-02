@@ -159,12 +159,18 @@ function Main() {
               </table>
             </div>
             <div className="w-full">
-              <Link
-                to="/programs"
-                className="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500"
-              >
-                View More
-              </Link>
+              {store.programs?.length ? (
+                <Link
+                  to="/programs"
+                  className="intro-y w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500"
+                >
+                  View More
+                </Link>
+              ) : (
+                <div className="intro-y w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500">
+                  No Programs
+                </div>
+              )}
             </div>
           </div>
           {/* END: Recent Solana Programs */}

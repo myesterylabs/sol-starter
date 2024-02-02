@@ -1,5 +1,5 @@
 import { BrowserWindow, app, dialog, ipcMain, shell } from 'electron'
-import { FileSystemWallet, SavedStore } from '../types/Store'
+import { FileSystemWallet, SavedStore, SolProgram } from '../types/Store'
 import { RunCommand, createAccount, createProgram } from './commands'
 import RunQuery, { sendSettings } from './queries'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
@@ -8,6 +8,7 @@ import { exec, spawn } from 'child_process'
 import { Command } from '../types/Command'
 import { Query } from '../types/Queries'
 import { Topics } from '../types/Topic'
+import { promises as fsp } from 'fs'
 import icon from '../../resources/icon.png?asset'
 import { join } from 'path'
 import { store } from './store/index'
@@ -140,6 +141,40 @@ app.whenReady().then(() => {
     }
   })
 
+  ipcMain.handle(Topics.GET_PROGRAM_DETAILS, async (_event, id: string) => {
+    let programs = store.get('programs') as Array<SolProgram>
+    let program = programs.find((p) => p.id === id)
+    if (!program) {
+      return null
+    }
+    // load details like amount of files, last modified, version
+    let no_of_files = await fsp.readdir(program.path);
+    let last_modified = (await fsp.stat(program.path)).mtime;
+
+    return {
+      ...program,
+      no_of_files: no_of_files.length,
+      last_modified: last_modified.toDateString()
+    }
+  })
+
+  ipcMain.handle(Topics.DELETE_PROGRAM, (_event, id: string) => {
+    let programs = store.get('programs') as Array<SolProgram>
+    let program = programs.find((p) => p.id === id)
+    if (!program) {
+      return false
+    }
+    let index = programs.indexOf(program)
+    if (index > -1) {
+      programs.splice(index, 1)
+      store.set('programs', programs)
+      // unlink the directory
+      fsp.rmdir(program.path, { recursive: true })
+      return true
+    }
+    return false
+  })
+
   ipcMain.handle(Topics.CREATE_ACCOUNT, (_event, name: string, override: boolean) => {
     let outfile: string | null = null
     if (!override) {
@@ -175,7 +210,7 @@ app.whenReady().then(() => {
         ...(store.get('programs') || []),
         {
           name,
-          path,
+          path: res,
           created_at: new Date().toISOString(),
           id: ulid()
         }

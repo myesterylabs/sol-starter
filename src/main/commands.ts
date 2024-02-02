@@ -7,11 +7,14 @@ import { BrowserWindow } from 'electron'
 import { Topics } from '../types/Topic'
 import fs from 'fs'
 import path from 'path'
+import { stringify } from 'querystring'
 
 const fsp = fs.promises
 const commandMap: Record<Commands, string> = {
   INSTALL_SOLANA: 'sh -c "$(curl -sSfL https://release.solana.com/stable/install)"',
-  CHECK_SOLANA_INSTALLATION: 'solana --version'
+  CHECK_SOLANA_INSTALLATION: 'solana --version',
+  CHECK_RUST_INSTALLATION: 'cargo --version',
+  INSTALL_RUST: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh"
 }
 export const RunCommand = (
   command: Command,
@@ -97,15 +100,26 @@ export const createAccount = (
   }
 }
 
+const stringify = (str: string) => {
+  return str.trim().replace(/\s/g, '-').toLowerCase()
+}
+
 export const createProgram = async (
   name: string,
   destinationPath: string,
   app: Electron.App
-): Promise<boolean> => {
+): Promise<string> => {
   // ensure the path exists
   let exists = fs.existsSync(destinationPath)
   if (!exists) {
     return Promise.reject(false)
+  }
+  // make sure directory has no files
+  let files = await fsp.readdir(destinationPath)
+  if (files.length > 1) {
+    console.log('destination directory is not empty, it has ' + files.length + ' files ' + files[0])
+    destinationPath = path.join(destinationPath, stringify(name))
+    await fsp.mkdir(destinationPath)
   }
   // copy the template to the path
   let res = await copyDirectory(
@@ -116,30 +130,20 @@ export const createProgram = async (
     // we need to use fast-toml to edit the content of the Cargo.toml file and set the name
     const toml = await fsp.readFile(path.join(destinationPath, 'Cargo.toml'), 'utf-8')
     // let stringify replace spaces with - and make lowercase after trimming
-    const stringify = (str: string) => {
-      return str.trim().replace(/\s/g, '-').toLowerCase()
-    }
-
     let stringifiedName = stringify(name)
 
     const newToml = toml
       .replace('test-prog', stringifiedName)
       .replace('hello_world', stringify(name))
     await fsp.writeFile(path.join(destinationPath, 'Cargo.toml'), newToml, 'utf-8')
-    return true
+    return destinationPath
   }
-  return res
+  return destinationPath
 }
 
 async function copyDirectory(source, destination) {
   // files are src/lib.rs, .gitignore, Cargo.toml
   // we need to copy all of them to the destination manually
-  // make sure directory has no files
-  let files = await fsp.readdir(destination)
-  if (files.length > 1) {
-    console.log('destination directory is not empty, it has ' + files.length + ' files ' + files[0])
-    return false
-  }
 
   // make src folder
   await fsp.mkdir(path.join(destination, 'src'))
