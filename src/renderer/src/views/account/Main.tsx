@@ -9,7 +9,8 @@ import { solSettings } from '@/stores/sol-settings'
 import { useRecoilValue } from 'recoil'
 
 function Main() {
-  const [creationModal, setCreationModal] = useState(false)
+  const openModal = window.location.search.match(/openModal=(?<openModal>\w+)/)?.groups || {}
+  const [creationModal, setCreationModal] = useState(openModal?.openModal === 'true')
   const [accountName, setAccountName] = useState('')
   const [mainAccount, setMainAccount] = useState(false)
   const store = useRecoilValue(savedStore)

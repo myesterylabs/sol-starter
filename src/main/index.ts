@@ -186,9 +186,8 @@ app.whenReady().then(() => {
 
   ipcMain.handle(Topics.CODE, async (_event, path: string) => {
     // open in vscode
-    let res
     try {
-      res = await exec(`code ${path}`)
+      await exec(`code ${path}`)
     } catch (error) {
       return false
     }
@@ -196,8 +195,8 @@ app.whenReady().then(() => {
     return true
   })
 
-  ipcMain.on(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, (_event, val: SavedStore) => {
-    store.set(val)
+  ipcMain.handle(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, (_event, key: keyof SavedStore, val: any) => {
+    store.set(key, val)
   })
   store.onDidAnyChange(() => {
     mainWindow.webContents.send(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, store.store)
@@ -211,8 +210,8 @@ app.whenReady().then(() => {
     }
   }, 2000)
 
-  console.log(app.getAppPath())
-  // console.log(app.getPath('userData'))
+  // console.log(app.getAppPath())
+  console.log(app.getPath('userData'))
 })
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

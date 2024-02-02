@@ -75,8 +75,8 @@ function Main() {
                       <div className="flex">
                         <Lucide icon="User" className="report-box__icon text-success" />
                       </div>
-                      <div className="text-3xl font-medium leading-8 mt-6">52357</div>
-                      <div className="text-base text-slate-500 mt-1">Processed Transactions</div>
+                      <div className="text-3xl font-medium leading-8 mt-6">{store.last_block}</div>
+                      <div className="text-base text-slate-500 mt-1">Processed Blocks</div>
                     </div>
                   </div>
                 </Link>
@@ -90,58 +90,66 @@ function Main() {
             <div className="intro-y block sm:flex items-center h-10">
               <h2 className="text-lg font-medium truncate mr-5">Recent Solana Programs</h2>
               <div className="flex items-center sm:ml-auto mt-3 sm:mt-0">
-                <button className="btn box flex items-center text-slate-600 dark:text-slate-300">
-                  <Lucide icon="Plus" className="hidden sm:block w-4 h-4 mr-2" />
-                  Create Program
-                </button>
+                <Link to="/programs?openModal=true">
+                  <button className="btn box flex items-center text-slate-600 dark:text-slate-300">
+                    <Lucide icon="Plus" className="hidden sm:block w-4 h-4 mr-2" />
+                    Create Program
+                  </button>
+                </Link>
+
+                <Link to="/accounts?openModal=true">
                 <button className="ml-3 btn box flex items-center text-slate-600 dark:text-slate-300">
                   <Lucide icon="Plus" className="hidden sm:block w-4 h-4 mr-2" />
                   Create Account
-                </button>
+                  </button>
+                </Link>
               </div>
             </div>
-            <div className="intro-y overflow-auto lg:overflow-visible mt-8 sm:mt-0">
+            <div className="intro-y col-span-12 overflow-auto lg:overflow-visible">
               <table className="table table-report sm:mt-2">
                 <thead>
                   <tr>
                     {/* <th className="whitespace-nowrap">IMAGES</th> */}
                     <th className="whitespace-nowrap">PROJECT NAME</th>
-                    <th className="text-center whitespace-nowrap">LAST MODIFIED</th>
+                    <th className="text-center whitespace-nowrap">CREATED AT</th>
                     <th className="text-center whitespace-nowrap">STATUS</th>
                     <th className="text-center whitespace-nowrap">ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {$_.take($f(), 4).map((faker, fakerKey) => (
-                    <tr key={fakerKey} className="intro-x">
+                  {store.programs?.map((program) => (
+                    <tr key={program.id} className="intro-x">
                       <td>
                         <a href="" className="font-medium whitespace-nowrap">
-                          {faker.products[0].name}
+                          {program.name}
                         </a>
                         <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
                           V 0.0.1
                         </div>
                       </td>
-                      <td className="text-center">26 Jan 2024</td>
+                      <td className="text-center">
+                        {new Date(program.created_at).toLocaleDateString()}
+                      </td>
                       <td className="w-40">
                         <div
                           className={classnames({
-                            'flex items-center justify-center': true,
-                            'text-success': faker.trueFalse[0],
-                            'text-danger': !faker.trueFalse[0]
+                            'flex items-center justify-center': true
                           })}
                         >
-                          {faker.trueFalse[0] ? 'Deployed' : 'Local'}
+                          {program.path}
                         </div>
                       </td>
                       <td className="table-report__action w-56">
                         <div className="flex justify-center items-center">
-                          <a className="flex items-center mr-3" href="">
+                          <a
+                            onClick={() => {
+                              window.api.code(program.path)
+                            }}
+                            className="flex items-center mr-3"
+                            href="#"
+                          >
                             <Lucide icon="Code" className="w-4 h-4 mr-1" />
                             Code
-                          </a>
-                          <a className="flex items-center text-danger" href="">
-                            <Lucide icon="Trash2" className="w-4 h-4 mr-1" /> Delete
                           </a>
                         </div>
                       </td>
@@ -210,19 +218,24 @@ function Main() {
                 <h2 className="text-lg font-medium truncate mr-5">Recent Blocks</h2>
               </div>
               <div className="mt-5">
-                {$_.take($f(), 5).map((faker, fakerKey) => (
-                  <div key={fakerKey} className="intro-x">
-                    <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      {/* <div className="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                {new Array(5)
+                  .fill(store.last_block)
+                  .map((x, i) => x - i)
+                  .map((blockNumber) => (
+                    <div key={blockNumber} className="intro-x">
+                      <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
+                        {/* <div className="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
                         <img alt="Midone Tailwind HTML Admin Template" src={faker.photos[0]} />
                       </div> */}
-                      <div className="ml-4 mr-auto">
-                        <div className="font-medium">#69400</div>
-                        <div className="text-slate-500 text-xs mt-0.5">{faker.dates[0]}</div>
+                        <div className="ml-4 mr-auto">
+                          <div className="font-medium">#{blockNumber}</div>
+                          <div className="text-slate-500 text-xs mt-0.5">
+                            {new Date().toLocaleDateString()}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
                 <Link
                   to="/validator"
                   className="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500"

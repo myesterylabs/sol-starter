@@ -1,29 +1,29 @@
-import * as $_ from 'lodash'
+import { Lucide, Modal, ModalBody } from '@/base-components'
+import { adjectives, animals, colors, uniqueNamesGenerator } from 'unique-names-generator'
+import { useEffect, useState } from 'react'
 
-import {
-  Dropdown,
-  DropdownContent,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Lucide,
-  Modal,
-  ModalBody,
-  Tippy
-} from '@/base-components'
-
-import { faker as $f } from '@/utils'
 import classnames from 'classnames'
 import { savedStore } from '@renderer/stores/saved-store'
 import { useRecoilValue } from 'recoil'
-import { useState } from 'react'
 
 function Main() {
-  const [creationModal, setCreationModal] = useState(false)
   const [accountName, setAccountName] = useState('')
   // const [mainAccount, setMainAccount] = useState(false)
   const [folder, setFolder] = useState('')
   const store = useRecoilValue(savedStore)
+  // check if a query param called openModal is set to true
+  const openModal = window.location.search.match(/openModal=(?<openModal>\w+)/)?.groups || {}
+  const [creationModal, setCreationModal] = useState(openModal?.openModal === 'true')
+  
+  useEffect(() => {
+    const shortName = uniqueNamesGenerator({
+      dictionaries: [adjectives, animals, colors],
+      length: 2,
+      separator: '-'
+    })
+
+    setAccountName(shortName)
+  }, [creationModal])
   return (
     <>
       <h2 className="intro-y text-lg font-medium mt-10">Programs</h2>
@@ -77,7 +77,9 @@ function Main() {
                         onClick={() => {
                           window.api.code(program.path)
                         }}
-                        className="flex items-center mr-3" href="#">
+                        className="flex items-center mr-3"
+                        href="#"
+                      >
                         <Lucide icon="Code" className="w-4 h-4 mr-1" />
                         Code
                       </a>

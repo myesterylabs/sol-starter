@@ -30,6 +30,10 @@ const schema: Store.Schema<SavedStore> = {
   programs: {
     type: 'array',
     default: []
+  },
+  last_block: {
+    type: 'number',
+    default: 0
   }
 }
 

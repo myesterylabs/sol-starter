@@ -5,6 +5,7 @@ export type SavedStore = {
   ws_url: string
   accounts?: Array<FileSystemWallet>
   programs?: Array<SolProgram>
+  last_block?: number
 }
 
 export type FileSystemWallet = {

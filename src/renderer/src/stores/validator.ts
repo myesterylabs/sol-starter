@@ -1,7 +1,7 @@
 import { getRecoil, setRecoil } from 'recoil-nexus'
 
 import { Topics } from '@type/Topic'
-import { atom, } from 'recoil'
+import { atom } from 'recoil'
 import { ulid } from 'ulid'
 
 // import { Commands } from '@type/Command'
@@ -76,6 +76,9 @@ window.api.listen(Topics.STDOUT_STREAM, Topics.VALIDATOR, (val: string) => {
       message: val
     }
   ])
+  if (parsed?.processed) {
+    window.api.updateStore('last_block', parsed?.processed)
+  }
 })
 
 window.api.listen(Topics.VALIDATOR, Topics.STATUS, (val: boolean) => {
@@ -83,4 +86,3 @@ window.api.listen(Topics.VALIDATOR, Topics.STATUS, (val: boolean) => {
 })
 
 export { validatorStatus, valTrigger, validatorLogs, validatorStats }
-
