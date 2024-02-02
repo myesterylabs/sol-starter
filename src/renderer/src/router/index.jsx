@@ -1,7 +1,7 @@
 import Account from '../views/account/Main'
 import Home from '../views/home/Main'
 import NotFound from '../views/404/Main'
-import Projects from '../views/projects/Main'
+import Programs from '../views/programs/Main'
 import Settings from '../views/settings/Main'
 // import Petupage2 from "../views/page-2/Main";
 import Setup from '../views/setup/Main'
@@ -27,8 +27,8 @@ function Router() {
           element: <Validator />
         },
         {
-          path: '/projects',
-          element: <Projects />
+          path: '/programs',
+          element: <Programs />
         },
         {
           path: '/accounts',
@@ -38,7 +38,6 @@ function Router() {
           path: '/settings',
           element: <Settings />
         }
-
       ]
     },
     {

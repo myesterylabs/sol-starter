@@ -24,16 +24,16 @@ function Main() {
             </div>
             <div className="grid grid-cols-12 gap-6 mt-5">
               <div className="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
-                <Link to="/projects">
+                <Link to="/programs">
                   <div className="report-box zoom-in relative">
                     <div className="box p-5">
                       <div className="flex">
                         <Lucide icon="Code" className="report-box__icon text-primary" />
                       </div>
                       <div className="text-3xl font-medium leading-8 mt-6">
-                        {store.projects?.length}
+                        {store.programs?.length}
                       </div>
-                      <div className="text-base text-slate-500 mt-1">Solana Projects</div>
+                      <div className="text-base text-slate-500 mt-1">Solana Programs</div>
                     </div>
                   </div>
                 </Link>
@@ -85,14 +85,14 @@ function Main() {
           </div>
           {/* END: General Report */}
 
-          {/* BEGIN: Recent Solana Projects */}
+          {/* BEGIN: Recent Solana Programs */}
           <div className="col-span-12 mt-6">
             <div className="intro-y block sm:flex items-center h-10">
-              <h2 className="text-lg font-medium truncate mr-5">Recent Solana Projects</h2>
+              <h2 className="text-lg font-medium truncate mr-5">Recent Solana Programs</h2>
               <div className="flex items-center sm:ml-auto mt-3 sm:mt-0">
                 <button className="btn box flex items-center text-slate-600 dark:text-slate-300">
                   <Lucide icon="Plus" className="hidden sm:block w-4 h-4 mr-2" />
-                  Create Project
+                  Create Program
                 </button>
                 <button className="ml-3 btn box flex items-center text-slate-600 dark:text-slate-300">
                   <Lucide icon="Plus" className="hidden sm:block w-4 h-4 mr-2" />
@@ -152,14 +152,14 @@ function Main() {
             </div>
             <div className="w-full">
               <Link
-                to="/projects"
+                to="/programs"
                 className="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-300 text-slate-500"
               >
                 View More
               </Link>
             </div>
           </div>
-          {/* END: Recent Solana Projects */}
+          {/* END: Recent Solana Programs */}
         </div>
       </div>
       <div className="col-span-12 2xl:col-span-3">
@@ -299,12 +299,12 @@ function Main() {
                   <div className="box px-5 py-3 mb-3 flex items-center zoom-in">
                     <div className="flex justify-between w-full">
                       <div className="ml-4 mr-auto">
-                        <div className="font-medium">Create Projects</div>
+                        <div className="font-medium">Create Programs</div>
                         <div className="text-slate-500 text-xs mt-0.5">pending</div>
                       </div>
 
                       <div className="border-black">
-                        {store.projects?.length ? (
+                        {store.programs?.length ? (
                           <Lucide icon="CheckSquare" className="w-5 h-5 mt-2 text-green-500" />
                         ) : (
                           <Lucide icon="Loader" className="w-5 h-5 mt-2 text-warning" />

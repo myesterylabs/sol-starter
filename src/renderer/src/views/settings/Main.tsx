@@ -1,4 +1,4 @@
-import * as $_ from "lodash";
+import * as $_ from 'lodash'
 
 import {
   Dropdown,
@@ -15,36 +15,36 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  TinySlider,
-} from "@/base-components";
+  TinySlider
+} from '@/base-components'
 
-import { faker as $f } from "@/utils";
-import ReportLineChart from "@/components/report-line-chart/Main";
-import { useRef } from "react";
+import { faker as $f } from '@/utils'
+import ReportLineChart from '@/components/report-line-chart/Main'
+import { useRef } from 'react'
 
 function Main() {
-  const announcementRef = useRef();
-  const newProjectsRef = useRef();
-  const todaySchedulesRef = useRef();
+  const announcementRef = useRef()
+  const newProgramsRef = useRef()
+  const todaySchedulesRef = useRef()
 
   const prevAnnouncement = () => {
-    announcementRef.current.tns.goTo("prev");
-  };
+    announcementRef.current.tns.goTo('prev')
+  }
   const nextAnnouncement = () => {
-    announcementRef.current.tns.goTo("next");
-  };
-  const prevNewProjects = () => {
-    newProjectsRef.current.tns.goTo("prev");
-  };
-  const nextNewProjects = () => {
-    newProjectsRef.current.tns.goTo("next");
-  };
+    announcementRef.current.tns.goTo('next')
+  }
+  const prevNewPrograms = () => {
+    newProgramsRef.current.tns.goTo('prev')
+  }
+  const nextNewPrograms = () => {
+    newProgramsRef.current.tns.goTo('next')
+  }
   const prevTodaySchedules = () => {
-    todaySchedulesRef.current.tns.goTo("prev");
-  };
+    todaySchedulesRef.current.tns.goTo('prev')
+  }
   const nextTodaySchedules = () => {
-    todaySchedulesRef.current.tns.goTo("next");
-  };
+    todaySchedulesRef.current.tns.goTo('next')
+  }
 
   return (
     <>
@@ -64,17 +64,12 @@ function Main() {
                 />
               </div>
               <div className="ml-4 mr-auto">
-                <div className="font-medium text-base">
-                  {$f()[0].users[0].name}
-                </div>
+                <div className="font-medium text-base">{$f()[0].users[0].name}</div>
                 <div className="text-slate-500">{$f()[0].jobs[0]}</div>
               </div>
               <Dropdown>
                 <DropdownToggle tag="a" className="w-5 h-5 block" href="#">
-                  <Lucide
-                    icon="MoreHorizontal"
-                    className="w-5 h-5 text-slate-500"
-                  />
+                  <Lucide icon="MoreHorizontal" className="w-5 h-5 text-slate-500" />
                 </DropdownToggle>
                 <DropdownMenu className="w-56">
                   <DropdownContent>
@@ -101,16 +96,10 @@ function Main() {
                     </DropdownItem>
                     <DropdownDivider />
                     <DropdownFooter>
-                      <button
-                        type="button"
-                        className="btn btn-primary py-1 px-2"
-                      >
+                      <button type="button" className="btn btn-primary py-1 px-2">
                         Settings
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-secondary py-1 px-2 ml-auto"
-                      >
+                      <button type="button" className="btn btn-secondary py-1 px-2 ml-auto">
                         View Profile
                       </button>
                     </DropdownFooter>
@@ -120,8 +109,7 @@ function Main() {
             </div>
             <div className="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
               <a className="flex items-center text-primary font-medium" href="">
-                <Lucide icon="Activity" className="w-4 h-4 mr-2" /> Personal
-                Information
+                <Lucide icon="Activity" className="w-4 h-4 mr-2" /> Personal Information
               </a>
               <a className="flex items-center mt-5" href="">
                 <Lucide icon="Box" className="w-4 h-4 mr-2" /> Account Settings
@@ -130,35 +118,28 @@ function Main() {
                 <Lucide icon="Lock" className="w-4 h-4 mr-2" /> Change Password
               </a>
               <a className="flex items-center mt-5" href="">
-                <Lucide icon="Settings" className="w-4 h-4 mr-2" /> User
-                Settings
+                <Lucide icon="Settings" className="w-4 h-4 mr-2" /> User Settings
               </a>
             </div>
             <div className="p-5 border-t border-slate-200/60 dark:border-darkmode-400">
               <a className="flex items-center" href="">
-                <Lucide icon="Activity" className="w-4 h-4 mr-2" /> Email
-                Settings
+                <Lucide icon="Activity" className="w-4 h-4 mr-2" /> Email Settings
               </a>
               <a className="flex items-center mt-5" href="">
-                <Lucide icon="Box" className="w-4 h-4 mr-2" /> Saved Credit
-                Cards
+                <Lucide icon="Box" className="w-4 h-4 mr-2" /> Saved Credit Cards
               </a>
               <a className="flex items-center mt-5" href="">
                 <Lucide icon="Lock" className="w-4 h-4 mr-2" /> Social Networks
               </a>
               <a className="flex items-center mt-5" href="">
-                <Lucide icon="Settings" className="w-4 h-4 mr-2" /> Tax
-                Information
+                <Lucide icon="Settings" className="w-4 h-4 mr-2" /> Tax Information
               </a>
             </div>
             <div className="p-5 border-t border-slate-200/60 dark:border-darkmode-400 flex">
               <button type="button" className="btn btn-primary py-1 px-2">
                 New Group
               </button>
-              <button
-                type="button"
-                className="btn btn-outline-secondary py-1 px-2 ml-auto"
-              >
+              <button type="button" className="btn btn-outline-secondary py-1 px-2 ml-auto">
                 New Quick Link
               </button>
             </div>
@@ -171,9 +152,8 @@ function Main() {
               </div>
             </div>
             <div className="mt-4">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s.
+              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
+              has been the industry's standard dummy text ever since the 1500s.
             </div>
             <div className="font-medium flex mt-5">
               <button
@@ -200,16 +180,12 @@ function Main() {
                 <h2 className="font-medium text-base mr-auto">Daily Sales</h2>
                 <Dropdown className="ml-auto sm:hidden">
                   <DropdownToggle tag="a" className="w-5 h-5 block" href="#">
-                    <Lucide
-                      icon="MoreHorizontal"
-                      className="w-5 h-5 text-slate-500"
-                    />
+                    <Lucide icon="MoreHorizontal" className="w-5 h-5 text-slate-500" />
                   </DropdownToggle>
                   <DropdownMenu className="w-40">
                     <DropdownContent>
                       <DropdownItem>
-                        <Lucide icon="File" className="w-4 h-4 mr-2" /> Download
-                        Excel
+                        <Lucide icon="File" className="w-4 h-4 mr-2" /> Download Excel
                       </DropdownItem>
                     </DropdownContent>
                   </DropdownMenu>
@@ -235,9 +211,7 @@ function Main() {
                       Bootstrap 4 HTML Admin Template
                     </div>
                   </div>
-                  <div className="font-medium text-slate-600 dark:text-slate-500">
-                    +$19
-                  </div>
+                  <div className="font-medium text-slate-600 dark:text-slate-500">+$19</div>
                 </div>
                 <div className="relative flex items-center mt-5">
                   <div className="w-12 h-12 flex-none image-fit">
@@ -251,13 +225,9 @@ function Main() {
                     <a href="" className="font-medium">
                       {$f()[1].users[0].name}
                     </a>
-                    <div className="text-slate-500 mr-5 sm:mr-5">
-                      Tailwind HTML Admin Template
-                    </div>
+                    <div className="text-slate-500 mr-5 sm:mr-5">Tailwind HTML Admin Template</div>
                   </div>
-                  <div className="font-medium text-slate-600 dark:text-slate-500">
-                    +$25
-                  </div>
+                  <div className="font-medium text-slate-600 dark:text-slate-500">+$25</div>
                 </div>
                 <div className="relative flex items-center mt-5">
                   <div className="w-12 h-12 flex-none image-fit">
@@ -271,13 +241,9 @@ function Main() {
                     <a href="" className="font-medium">
                       {$f()[2].users[0].name}
                     </a>
-                    <div className="text-slate-500 mr-5 sm:mr-5">
-                      Vuejs HTML Admin Template
-                    </div>
+                    <div className="text-slate-500 mr-5 sm:mr-5">Vuejs HTML Admin Template</div>
                   </div>
-                  <div className="font-medium text-slate-600 dark:text-slate-500">
-                    +$21
-                  </div>
+                  <div className="font-medium text-slate-600 dark:text-slate-500">+$21</div>
                 </div>
               </div>
             </div>
@@ -301,107 +267,89 @@ function Main() {
               </div>
               <TinySlider
                 getRef={(el) => {
-                  announcementRef.current = el;
+                  announcementRef.current = el
                 }}
                 className="py-5"
               >
                 <div className="px-5">
-                  <div className="font-medium text-lg">
-                    Midone Admin Template
-                  </div>
+                  <div className="font-medium text-lg">Midone Admin Template</div>
                   <div className="text-slate-600 dark:text-slate-500 mt-2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever. <br />
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                    Ipsum has been the industry's standard dummy text ever. <br />
                     <br />
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry since the 1500s.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry since
+                    the 1500s.
                   </div>
                   <div className="flex items-center mt-5">
                     <div className="px-3 py-2 text-primary bg-primary/10 dark:bg-darkmode-400 dark:text-slate-300 rounded font-medium">
                       02 June 2021
                     </div>
-                    <button className="btn btn-secondary ml-auto">
-                      View Details
-                    </button>
+                    <button className="btn btn-secondary ml-auto">View Details</button>
                   </div>
                 </div>
                 <div className="px-5">
-                  <div className="font-medium text-lg">
-                    Midone Admin Template
-                  </div>
+                  <div className="font-medium text-lg">Midone Admin Template</div>
                   <div className="text-slate-600 dark:text-slate-500 mt-2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever. <br />
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                    Ipsum has been the industry's standard dummy text ever. <br />
                     <br />
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry since the 1500s.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry since
+                    the 1500s.
                   </div>
                   <div className="flex items-center mt-5">
                     <div className="px-3 py-2 text-primary bg-primary/10 dark:bg-darkmode-400 dark:text-slate-300 rounded font-medium">
                       02 June 2021
                     </div>
-                    <button className="btn btn-secondary ml-auto">
-                      View Details
-                    </button>
+                    <button className="btn btn-secondary ml-auto">View Details</button>
                   </div>
                 </div>
                 <div className="px-5">
-                  <div className="font-medium text-lg">
-                    Midone Admin Template
-                  </div>
+                  <div className="font-medium text-lg">Midone Admin Template</div>
                   <div className="text-slate-600 dark:text-slate-500 mt-2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever. <br />
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                    Ipsum has been the industry's standard dummy text ever. <br />
                     <br />
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry since the 1500s.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry since
+                    the 1500s.
                   </div>
                   <div className="flex items-center mt-5">
                     <div className="px-3 py-2 text-primary bg-primary/10 dark:bg-darkmode-400 dark:text-slate-300 rounded font-medium">
                       02 June 2021
                     </div>
-                    <button className="btn btn-secondary ml-auto">
-                      View Details
-                    </button>
+                    <button className="btn btn-secondary ml-auto">View Details</button>
                   </div>
                 </div>
               </TinySlider>
             </div>
             {/* END: Announcement */}
-            {/* BEGIN: Projects */}
+            {/* BEGIN: Programs */}
             <div className="intro-y box col-span-12 2xl:col-span-6">
               <div className="flex items-center px-5 py-3 border-b border-slate-200/60 dark:border-darkmode-400">
-                <h2 className="font-medium text-base mr-auto">Projects</h2>
+                <h2 className="font-medium text-base mr-auto">Programs</h2>
                 <button
                   className="tiny-slider-navigator btn btn-outline-secondary px-2 mr-2"
-                  onClick={prevNewProjects}
+                  onClick={prevNewPrograms}
                 >
                   <Lucide icon="ChevronLeft" className="w-4 h-4" />
                 </button>
                 <button
                   className="tiny-slider-navigator btn btn-outline-secondary px-2"
-                  onClick={nextNewProjects}
+                  onClick={nextNewPrograms}
                 >
                   <Lucide icon="ChevronRight" className="w-4 h-4" />
                 </button>
               </div>
               <TinySlider
                 getRef={(el) => {
-                  newProjectsRef.current = el;
+                  newProgramsRef.current = el
                 }}
                 className="py-5"
               >
                 <div className="px-5">
-                  <div className="font-medium text-lg">
-                    Midone Admin Template
-                  </div>
+                  <div className="font-medium text-lg">Midone Admin Template</div>
                   <div className="text-slate-600 dark:text-slate-500 mt-2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                    Ipsum has been the industry's standard dummy text ever since the 1500s.
                   </div>
                   <div className="mt-5">
                     <div className="flex text-slate-500">
@@ -420,13 +368,10 @@ function Main() {
                   </div>
                 </div>
                 <div className="px-5">
-                  <div className="font-medium text-lg">
-                    Midone Admin Template
-                  </div>
+                  <div className="font-medium text-lg">Midone Admin Template</div>
                   <div className="text-slate-600 dark:text-slate-500 mt-2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                    Ipsum has been the industry's standard dummy text ever since the 1500s.
                   </div>
                   <div className="mt-5">
                     <div className="flex text-slate-500">
@@ -445,13 +390,10 @@ function Main() {
                   </div>
                 </div>
                 <div className="px-5">
-                  <div className="font-medium text-lg">
-                    Midone Admin Template
-                  </div>
+                  <div className="font-medium text-lg">Midone Admin Template</div>
                   <div className="text-slate-600 dark:text-slate-500 mt-2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry. Lorem Ipsum has been the industry's
-                    standard dummy text ever since the 1500s.
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                    Ipsum has been the industry's standard dummy text ever since the 1500s.
                   </div>
                   <div className="mt-5">
                     <div className="flex text-slate-500">
@@ -471,13 +413,11 @@ function Main() {
                 </div>
               </TinySlider>
             </div>
-            {/* END: Projects */}
+            {/* END: Programs */}
             {/* BEGIN: Today Schedules */}
             <div className="intro-y box col-span-12 2xl:col-span-6">
               <div className="flex items-center px-5 py-3 border-b border-slate-200/60 dark:border-darkmode-400">
-                <h2 className="font-medium text-base mr-auto">
-                  Today Schedules
-                </h2>
+                <h2 className="font-medium text-base mr-auto">Today Schedules</h2>
                 <button
                   className="tiny-slider-navigator btn btn-outline-secondary px-2 mr-2"
                   onClick={prevTodaySchedules}
@@ -493,25 +433,19 @@ function Main() {
               </div>
               <TinySlider
                 getRef={(el) => {
-                  todaySchedulesRef.current = el;
+                  todaySchedulesRef.current = el
                 }}
                 className="py-5"
               >
                 <div className="px-5 text-center sm:text-left">
-                  <div className="font-medium text-lg">
-                    Developing rest API with Laravel 7
-                  </div>
+                  <div className="font-medium text-lg">Developing rest API with Laravel 7</div>
                   <div className="text-slate-600 dark:text-slate-500 mt-2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry
                   </div>
                   <div className="mt-2">11:15AM - 12:30PM</div>
                   <div className="flex flex-col sm:flex-row items-center mt-5">
                     <div className="flex items-center text-slate-500">
-                      <Lucide
-                        icon="MapPin"
-                        className="hidden sm:block w-4 h-4 mr-2"
-                      />
+                      <Lucide icon="MapPin" className="hidden sm:block w-4 h-4 mr-2" />
                       1396 Pooh Bear Lane, New Market
                     </div>
                     <button className="btn btn-secondary py-1 px-2 sm:ml-auto mt-3 sm:mt-0sm:ml-auto mt-3 sm:mt-0">
@@ -520,20 +454,14 @@ function Main() {
                   </div>
                 </div>
                 <div className="px-5 text-center sm:text-left">
-                  <div className="font-medium text-lg">
-                    Developing rest API with Laravel 7
-                  </div>
+                  <div className="font-medium text-lg">Developing rest API with Laravel 7</div>
                   <div className="text-slate-600 dark:text-slate-500 mt-2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry
                   </div>
                   <div className="mt-2">11:15AM - 12:30PM</div>
                   <div className="flex flex-col sm:flex-row items-center mt-5">
                     <div className="flex items-center text-slate-500">
-                      <Lucide
-                        icon="MapPin"
-                        className="hidden sm:block w-4 h-4 mr-2"
-                      />
+                      <Lucide icon="MapPin" className="hidden sm:block w-4 h-4 mr-2" />
                       1396 Pooh Bear Lane, New Market
                     </div>
                     <button className="btn btn-secondary py-1 px-2 sm:ml-auto mt-3 sm:mt-0sm:ml-auto mt-3 sm:mt-0">
@@ -542,20 +470,14 @@ function Main() {
                   </div>
                 </div>
                 <div className="px-5 text-center sm:text-left">
-                  <div className="font-medium text-lg">
-                    Developing rest API with Laravel 7
-                  </div>
+                  <div className="font-medium text-lg">Developing rest API with Laravel 7</div>
                   <div className="text-slate-600 dark:text-slate-500 mt-2">
-                    Lorem Ipsum is simply dummy text of the printing and
-                    typesetting industry
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry
                   </div>
                   <div className="mt-2">11:15AM - 12:30PM</div>
                   <div className="flex flex-col sm:flex-row items-center mt-5">
                     <div className="flex items-center text-slate-500">
-                      <Lucide
-                        icon="MapPin"
-                        className="hidden sm:block w-4 h-4 mr-2"
-                      />
+                      <Lucide icon="MapPin" className="hidden sm:block w-4 h-4 mr-2" />
                       1396 Pooh Bear Lane, New Market
                     </div>
                     <button className="btn btn-secondary py-1 px-2 sm:ml-auto mt-3 sm:mt-0sm:ml-auto mt-3 sm:mt-0">
@@ -572,16 +494,12 @@ function Main() {
                 <h2 className="font-medium text-base mr-auto">Top Products</h2>
                 <Dropdown className="ml-auto">
                   <DropdownToggle tag="a" className="w-5 h-5 block" href="#">
-                    <Lucide
-                      icon="MoreHorizontal"
-                      className="w-5 h-5 text-slate-500"
-                    />
+                    <Lucide icon="MoreHorizontal" className="w-5 h-5 text-slate-500" />
                   </DropdownToggle>
                   <DropdownMenu className="w-40">
                     <DropdownContent>
                       <DropdownItem>
-                        <Lucide icon="Edit2" className="w-4 h-4 mr-2" /> New
-                        Chat
+                        <Lucide icon="Edit2" className="w-4 h-4 mr-2" /> New Chat
                       </DropdownItem>
                       <DropdownItem>
                         <Lucide icon="Trash" className="w-4 h-4 mr-2" /> Delete
@@ -596,27 +514,20 @@ function Main() {
                     fullWidth={false}
                     className="text-center w-full sm:w-20 mb-2 sm:mb-0 sm:mx-2 py-2 px-0 cursor-pointer"
                   >
-                    <Lucide icon="Box" className="block w-6 h-6 mb-2 mx-auto" />{" "}
-                    Laravel
+                    <Lucide icon="Box" className="block w-6 h-6 mb-2 mx-auto" /> Laravel
                   </Tab>
                   <Tab
                     fullWidth={false}
                     className="text-center w-full sm:w-20 mb-2 sm:mb-0 sm:mx-2 py-2 px-0 cursor-pointer"
                   >
-                    <Lucide
-                      icon="Inbox"
-                      className="block w-6 h-6 mb-2 mx-auto"
-                    />
+                    <Lucide icon="Inbox" className="block w-6 h-6 mb-2 mx-auto" />
                     Symfony
                   </Tab>
                   <Tab
                     fullWidth={false}
                     className="text-center w-full sm:w-20 mb-2 sm:mb-0 sm:mx-2 py-2 px-0 cursor-pointer"
                   >
-                    <Lucide
-                      icon="Activity"
-                      className="block w-6 h-6 mb-2 mx-auto"
-                    />
+                    <Lucide icon="Activity" className="block w-6 h-6 mb-2 mx-auto" />
                     Bootstrap
                   </Tab>
                 </TabList>
@@ -627,14 +538,10 @@ function Main() {
                         <a href="" className="font-medium">
                           Wordpress Template
                         </a>
-                        <div className="text-slate-500 mt-1">
-                          HTML, PHP, Mysql
-                        </div>
+                        <div className="text-slate-500 mt-1">HTML, PHP, Mysql</div>
                       </div>
                       <div className="w-full sm:w-auto flex items-center mt-3 sm:mt-0">
-                        <div className="bg-success/20 text-success rounded px-2 mr-5">
-                          +20%
-                        </div>
+                        <div className="bg-success/20 text-success rounded px-2 mr-5">+20%</div>
                         <div className="progress h-1 mt-2 sm:w-40">
                           <div
                             className="progress-bar w-1/2 bg-primary"
@@ -654,9 +561,7 @@ function Main() {
                         <div className="text-slate-500 mt-1">PHP, Mysql</div>
                       </div>
                       <div className="w-full sm:w-auto flex items-center mt-3 sm:mt-0">
-                        <div className="bg-success/20 text-success rounded px-2 mr-5">
-                          +55%
-                        </div>
+                        <div className="bg-success/20 text-success rounded px-2 mr-5">+55%</div>
                         <div className="progress h-1 mt-2 sm:w-40">
                           <div
                             className="progress-bar w-2/3 bg-primary"
@@ -676,9 +581,7 @@ function Main() {
                         <div className="text-slate-500 mt-1">HTML, CSS, JS</div>
                       </div>
                       <div className="w-full sm:w-auto flex items-center mt-3 sm:mt-0">
-                        <div className="bg-success/20 text-success rounded px-2 mr-5">
-                          +40%
-                        </div>
+                        <div className="bg-success/20 text-success rounded px-2 mr-5">+40%</div>
                         <div className="progress h-1 mt-2 sm:w-40">
                           <div
                             className="progress-bar w-3/4 bg-primary"
@@ -698,29 +601,18 @@ function Main() {
             {/* BEGIN: Work In Progress */}
             <TabGroup className="intro-y box col-span-12 2xl:col-span-6">
               <div className="flex items-center px-5 py-5 sm:py-0 border-b border-slate-200/60 dark:border-darkmode-400">
-                <h2 className="font-medium text-base mr-auto">
-                  Work In Progress
-                </h2>
+                <h2 className="font-medium text-base mr-auto">Work In Progress</h2>
                 <Dropdown className="ml-auto sm:hidden">
                   <DropdownToggle tag="a" className="w-5 h-5 block" href="#">
-                    <Lucide
-                      icon="MoreHorizontal"
-                      className="w-5 h-5 text-slate-500"
-                    />
+                    <Lucide icon="MoreHorizontal" className="w-5 h-5 text-slate-500" />
                   </DropdownToggle>
                   <DropdownMenu className="w-40">
                     <DropdownContent tag="div">
                       <TabList className="block">
-                        <Tab
-                          fullWidth={false}
-                          className="dropdown-item cursor-pointer"
-                        >
+                        <Tab fullWidth={false} className="dropdown-item cursor-pointer">
                           New
                         </Tab>
-                        <Tab
-                          fullWidth={false}
-                          className="dropdown-item cursor-pointer"
-                        >
+                        <Tab fullWidth={false} className="dropdown-item cursor-pointer">
                           Last Week
                         </Tab>
                       </TabList>
@@ -799,10 +691,7 @@ function Main() {
                         ></div>
                       </div>
                     </div>
-                    <a
-                      href=""
-                      className="btn btn-secondary block w-40 mx-auto mt-5"
-                    >
+                    <a href="" className="btn btn-secondary block w-40 mx-auto mt-5">
                       View More Details
                     </a>
                   </TabPanel>
@@ -816,24 +705,15 @@ function Main() {
                 <h2 className="font-medium text-base mr-auto">Latest Tasks</h2>
                 <Dropdown className="ml-auto sm:hidden">
                   <DropdownToggle tag="a" className="w-5 h-5 block" href="#">
-                    <Lucide
-                      icon="MoreHorizontal"
-                      className="w-5 h-5 text-slate-500"
-                    />
+                    <Lucide icon="MoreHorizontal" className="w-5 h-5 text-slate-500" />
                   </DropdownToggle>
                   <DropdownMenu className="w-40">
                     <DropdownContent tag="div">
                       <TabList className="block">
-                        <Tab
-                          fullWidth={false}
-                          className="dropdown-item cursor-pointer"
-                        >
+                        <Tab fullWidth={false} className="dropdown-item cursor-pointer">
                           New
                         </Tab>
-                        <Tab
-                          fullWidth={false}
-                          className="dropdown-item cursor-pointer"
-                        >
+                        <Tab fullWidth={false} className="dropdown-item cursor-pointer">
                           Last Week
                         </Tab>
                       </TabList>
@@ -915,23 +795,13 @@ function Main() {
             {/* BEGIN: General Statistics */}
             <div className="intro-y box col-span-12 2xl:col-span-6">
               <div className="flex items-center px-5 py-5 sm:py-3 border-b border-slate-200/60 dark:border-darkmode-400">
-                <h2 className="font-medium text-base mr-auto">
-                  General Statistics
-                </h2>
+                <h2 className="font-medium text-base mr-auto">General Statistics</h2>
                 <Dropdown className="ml-auto">
-                  <DropdownToggle
-                    tag="a"
-                    className="w-5 h-5 block sm:hidden"
-                    href="#"
-                  >
-                    <Lucide
-                      icon="MoreHorizontal"
-                      className="w-5 h-5 text-slate-500"
-                    />
+                  <DropdownToggle tag="a" className="w-5 h-5 block sm:hidden" href="#">
+                    <Lucide icon="MoreHorizontal" className="w-5 h-5 text-slate-500" />
                   </DropdownToggle>
                   <DropdownToggle className="btn btn-outline-secondary font-normal hidden sm:flex">
-                    Export{" "}
-                    <Lucide icon="ChevronDown" className="w-4 h-4 ml-2" />
+                    Export <Lucide icon="ChevronDown" className="w-4 h-4 ml-2" />
                   </DropdownToggle>
                   <DropdownMenu className="w-40">
                     <DropdownContent>
@@ -995,7 +865,7 @@ function Main() {
         </div>
       </div>
     </>
-  );
+  )
 }
 
-export default Main;
+export default Main

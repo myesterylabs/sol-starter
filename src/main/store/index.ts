@@ -27,7 +27,7 @@ const schema: Store.Schema<SavedStore> = {
     type: 'array',
     default: []
   },
-  projects: {
+  programs: {
     type: 'array',
     default: []
   }

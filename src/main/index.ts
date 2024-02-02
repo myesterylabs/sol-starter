@@ -1,15 +1,15 @@
 import { BrowserWindow, app, dialog, ipcMain, shell } from 'electron'
 import { FileSystemWallet, SavedStore } from '../types/Store'
-import { RunCommand, createAccount } from './commands'
+import { RunCommand, createAccount, createProgram } from './commands'
 import RunQuery, { sendSettings } from './queries'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
+import { exec, spawn } from 'child_process'
 
 import { Command } from '../types/Command'
 import { Query } from '../types/Queries'
 import { Topics } from '../types/Topic'
 import icon from '../../resources/icon.png?asset'
 import { join } from 'path'
-import { spawn } from 'child_process'
 import { store } from './store/index'
 import { ulid } from 'ulid'
 
@@ -127,16 +127,19 @@ app.whenReady().then(() => {
     return store.store
   })
   ipcMain.handle(Topics.OPEN_FOLDER, async (_event, path: string) => {
-    // const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
-    //   properties: ['openDirectory']
-    // })
-    // if (canceled) {
-    //   return
-    // } else {
-    //   return filePaths[0]
-    // }
     return await shell.openPath(path)
   })
+  ipcMain.handle(Topics.SELECT_FOLDER, async () => {
+    const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+      properties: ['openDirectory']
+    })
+    if (canceled) {
+      return
+    } else {
+      return filePaths[0]
+    }
+  })
+
   ipcMain.handle(Topics.CREATE_ACCOUNT, (_event, name: string, override: boolean) => {
     let outfile: string | null = null
     if (!override) {
@@ -165,6 +168,34 @@ app.whenReady().then(() => {
     return settings
   })
 
+  ipcMain.handle(Topics.CREATE_PROGRAM, async (_event, name: string, path: string) => {
+    let res = await createProgram(name, path, app)
+    if (res) {
+      store.set('programs', [
+        ...(store.get('programs') || []),
+        {
+          name,
+          path,
+          created_at: new Date().toISOString(),
+          id: ulid()
+        }
+      ])
+    }
+    return res
+  })
+
+  ipcMain.handle(Topics.CODE, async (_event, path: string) => {
+    // open in vscode
+    let res
+    try {
+      res = await exec(`code ${path}`)
+    } catch (error) {
+      return false
+    }
+
+    return true
+  })
+
   ipcMain.on(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, (_event, val: SavedStore) => {
     store.set(val)
   })
@@ -179,6 +210,9 @@ app.whenReady().then(() => {
       mainWindow.webContents.send(`${Topics.SETTINGS}:${Topics.UPDATE}`, settings)
     }
   }, 2000)
+
+  console.log(app.getAppPath())
+  // console.log(app.getPath('userData'))
 })
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

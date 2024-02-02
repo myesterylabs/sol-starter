@@ -1,9 +1,14 @@
+// import * as TOML from 'fast-toml'
+
 import { Command, Commands } from '../types/Command'
 import { execSync, spawn } from 'child_process'
 
 import { BrowserWindow } from 'electron'
 import { Topics } from '../types/Topic'
+import fs from 'fs'
+import path from 'path'
 
+const fsp = fs.promises
 const commandMap: Record<Commands, string> = {
   INSTALL_SOLANA: 'sh -c "$(curl -sSfL https://release.solana.com/stable/install)"',
   CHECK_SOLANA_INSTALLATION: 'solana --version'
@@ -90,6 +95,65 @@ export const createAccount = (
       success: false
     }
   }
+}
+
+export const createProgram = async (
+  name: string,
+  destinationPath: string,
+  app: Electron.App
+): Promise<boolean> => {
+  // ensure the path exists
+  let exists = fs.existsSync(destinationPath)
+  if (!exists) {
+    return Promise.reject(false)
+  }
+  // copy the template to the path
+  let res = await copyDirectory(
+    path.join(app.getAppPath(), 'resources', 'sample-program'),
+    destinationPath
+  )
+  if (res) {
+    // we need to use fast-toml to edit the content of the Cargo.toml file and set the name
+    const toml = await fsp.readFile(path.join(destinationPath, 'Cargo.toml'), 'utf-8')
+    // let stringify replace spaces with - and make lowercase after trimming
+    const stringify = (str: string) => {
+      return str.trim().replace(/\s/g, '-').toLowerCase()
+    }
+
+    let stringifiedName = stringify(name)
+
+    const newToml = toml
+      .replace('test-prog', stringifiedName)
+      .replace('hello_world', stringify(name))
+    await fsp.writeFile(path.join(destinationPath, 'Cargo.toml'), newToml, 'utf-8')
+    return true
+  }
+  return res
+}
+
+async function copyDirectory(source, destination) {
+  // files are src/lib.rs, .gitignore, Cargo.toml
+  // we need to copy all of them to the destination manually
+  // make sure directory has no files
+  let files = await fsp.readdir(destination)
+  if (files.length > 1) {
+    console.log('destination directory is not empty, it has ' + files.length + ' files ' + files[0])
+    return false
+  }
+
+  // make src folder
+  await fsp.mkdir(path.join(destination, 'src'))
+
+  // copy lib.rs
+  await fsp.copyFile(path.join(source, 'src', 'lib.rs'), path.join(destination, 'src', 'lib.rs'))
+
+  // copy .gitignore
+  await fsp.copyFile(path.join(source, '.gitignore'), path.join(destination, '.gitignore'))
+
+  // copy Cargo.toml
+  await fsp.copyFile(path.join(source, 'Cargo.toml'), path.join(destination, 'Cargo.toml'))
+
+  return true
 }
 
 export default RunCommand

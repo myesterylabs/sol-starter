@@ -16,8 +16,8 @@ const sideMenu = atom({
       },
       {
         icon: 'Code',
-        pathname: '/projects',
-        title: 'Projects'
+        pathname: '/programs',
+        title: 'Programs'
       },
       {
         icon: 'Wallet',
