@@ -261,6 +261,39 @@ app.whenReady().then(() => {
     return res
   })
 
+  ipcMain.handle(Topics.SET_RPC_PORT, (_event, port: string) => {
+    let command = `solana config set --url http://localhost:${port}`
+    try {
+      execSync(command)
+      store.store.json_rpc_url = `http://localhost:${port}`
+      let settings;
+      if ((settings = sendSettings())) {
+        mainWindow.webContents.send(`${Topics.SETTINGS}:${Topics.UPDATE}`, settings)
+      }
+    } catch (error) {
+      return false
+    }
+    return true
+  })
+
+  ipcMain.handle(Topics.SET_MAIN_ACCOUNT, (_event, id: string) => {
+    let account = store.store.accounts?.find((a) => a.publicKey === id)
+    if (!account) {
+      return false
+    }
+    let command = `solana config set --keypair ${account.path}`
+    try {
+      execSync(command)
+      let settings;
+      if ((settings = sendSettings())) {
+        mainWindow.webContents.send(`${Topics.SETTINGS}:${Topics.UPDATE}`, settings)
+      }
+    } catch (error) {
+      return false
+    }
+    return true
+  })
+
   ipcMain.handle(Topics.CODE, async (_event, path: string) => {
     // open in vscode
     try {

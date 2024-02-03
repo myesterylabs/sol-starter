@@ -1,8 +1,7 @@
-import { Lucide, Modal, ModalBody } from '@/base-components'
+import { Modal, ModalBody } from '@/base-components'
 import { useEffect, useState } from 'react'
 
 import { FileSystemWallet } from '@type/Store'
-import { type } from '../../../../types/Command'
 
 function Main() {
   const [amount, setAmount] = useState(0)

@@ -46,6 +46,8 @@ const api = {
     balance: string
   }>,
   airdrop: (id: string, amount: number) => ipcRenderer.invoke(Topics.AIRDROP, id, amount) as Promise<boolean>,
+  setRpcPort: (port: string) => ipcRenderer.invoke(Topics.SET_RPC_PORT, port) as Promise<boolean>,
+  setMainAccount: (id: string) => ipcRenderer.invoke(Topics.SET_MAIN_ACCOUNT, id) as Promise<boolean>,
 }
 
 export type APIType = typeof api
