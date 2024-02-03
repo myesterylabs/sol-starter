@@ -158,10 +158,11 @@ app.whenReady().then(() => {
     }
   })
 
-  ipcMain.handle(Topics.GET_ACCOUNT_DETAILS, (_event, id: string) => {
+  ipcMain.handle(Topics.GET_ACCOUNT_DETAILS, async (_event, id: string) => {
     // if validator is off, switch on
     if (!isValidatorRunning()) {
       runValidator()
+      await new Promise((resolve) => setTimeout(resolve, 3000))
     }
     let accounts = store.get('accounts') as Array<FileSystemWallet>
     let account = accounts.find((a) => a.publicKey === id)
@@ -228,6 +229,8 @@ app.whenReady().then(() => {
     // if validator is off, switch on
     if (!isValidatorRunning()) {
       runValidator()
+      // wait for 3 seconds
+      await new Promise((resolve) => setTimeout(resolve, 3000))
     }
     // airdrop using solana cli
     // command should look like solana airdrop 1 9Gz7x9hqcshJsMmu3PUMWaSsraH51Sqotj91wnHsQzNh --url=http://localhost:8899
