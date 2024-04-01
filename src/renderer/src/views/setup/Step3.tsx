@@ -13,7 +13,8 @@ import { Topics } from '@type/Topic'
     @param {{solanaInstalled:boolean, parsedVersion: {cliVersion: string, src: string, feat:string,client: string }}} props
  */
 export function Step3() {
-  const [expectedPath, setExpectedPath] = useState('')
+  // const [expectedPath, setExpectedPath] = useState('')
+  
   const [downloading, setDownloading] = useState(false)
   const [downloaded, setDownloaded] = useState(false)
   const [error, setError] = useState('')
@@ -40,21 +41,21 @@ export function Step3() {
 
     setDownloading(true)
   }
-  async function checkRustInstallation() {
-    let res = window.api.runCommand({
-      command: Commands.CHECK_RUST_INSTALLATION,
-      channel: Commands.CHECK_RUST_INSTALLATION,
-      async: false
-    }) as CommandResult
+  // async function checkRustInstallation() {
+  //   let res = window.api.runCommand({
+  //     command: Commands.CHECK_RUST_INSTALLATION,
+  //     channel: Commands.CHECK_RUST_INSTALLATION,
+  //     async: false
+  //   }) as CommandResult
 
-    if ((await res).success) {
-      // setSolVersion(() => res)
-      reset()
-      setError('')
-    } else {
-      setError('Rust is not Installed, pls follow the instructions to install')
-    }
-  }
+  //   if ((await res).success) {
+  //     // setSolVersion(() => res)
+  //     reset()
+  //     setError('')
+  //   } else {
+  //     setError('Rust is not Installed, pls follow the instructions to install')
+  //   }
+  // }
 
   return (
     <>

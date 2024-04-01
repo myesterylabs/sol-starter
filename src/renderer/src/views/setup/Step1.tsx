@@ -102,9 +102,9 @@ export function Step1({ parsedVersion, setStep1Complete }) {
                         <div
                           className="progress-bar bg-primary"
                           role="progressbar"
-                          aria-valuenow="0"
-                          aria-valuemin="0"
-                          aria-valuemax="100"
+                          aria-valuenow={downloadProgress}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
                         ></div>
                       </div>
                     </div>
