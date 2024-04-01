@@ -118,9 +118,12 @@ function Main() {
                   {store.programs?.map((program) => (
                     <tr key={program.id} className="intro-x">
                       <td>
-                        <a href="" className="font-medium whitespace-nowrap">
+                        <Link
+                          to={'/programs/' + program.id}
+                          className="font-medium whitespace-nowrap"
+                        >
                           {program.name}
-                        </a>
+                        </Link>
                         <div className="text-slate-500 text-xs whitespace-nowrap mt-0.5">
                           V 0.0.1
                         </div>

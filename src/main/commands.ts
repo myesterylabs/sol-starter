@@ -84,7 +84,7 @@ export const createAccount = (
     }
 
     // Log the JSON result
-    console.log(result)
+    // console.log(result)
     return {
       stderr: '',
       stdout: output,

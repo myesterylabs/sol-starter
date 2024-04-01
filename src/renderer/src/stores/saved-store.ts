@@ -34,7 +34,8 @@ window.api.listen(Topics.SAVEDSTORE, Topics.UPDATE, (val: SavedStore) => {
   // get the hashed value of the store
   const hashedVal = btoa(JSON.stringify(val))
   // doing this just to trigger an update
-  console.log(hashedVal)
+  // console.log(hashedVal.length,hashedVal)
+  hashedVal
   setRecoil(savedStore, val)
 })
 

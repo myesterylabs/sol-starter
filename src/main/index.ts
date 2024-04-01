@@ -148,8 +148,16 @@ app.whenReady().then(() => {
       return null
     }
     // load details like amount of files, last modified, version
-    let no_of_files = await fsp.readdir(program.path)
-    let last_modified = (await fsp.stat(program.path)).mtime
+    let no_of_files: string[], last_modified: Date
+    try {
+     no_of_files = await fsp.readdir(program.path)
+       last_modified = (await fsp.stat(program.path)).mtime
+    } catch (error) {
+      // if file does not exist, delete from records and throw error
+      store.set('programs', programs.filter((p) => p.id !== id))
+      throw new Error('File does not exist')
+    }
+
 
     return {
       ...program,
