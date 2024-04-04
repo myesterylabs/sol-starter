@@ -2,6 +2,8 @@ import { Modal, ModalBody } from '@/base-components'
 import { useEffect, useState } from 'react'
 
 import { FileSystemWallet } from '@type/Store'
+import { savedStore } from '@/stores/saved-store'
+import { useRecoilValue } from 'recoil'
 
 function Main() {
   const [amount, setAmount] = useState(0)
@@ -15,9 +17,17 @@ function Main() {
     let id = window.location.pathname.split('/').pop()
     setAccountDetails(await window.api.getAccountDetails(id as string))
   }
+
   useEffect(() => {
     getAccountDetails()
   }, [])
+
+  // fetch account details when network changes
+  const store = useRecoilValue(savedStore)
+  useEffect(() => {
+    getAccountDetails()
+  }, [store.json_rpc_url])
+
   return (
     <>
       <div className="intro-y flex flex-col sm:flex-row items-center mt-8">
@@ -58,12 +68,12 @@ function Main() {
               <div className="font-medium text-base">Public Key</div>
               <div className="text-slate-500 ">{accountDetails.publicKey}</div>
             </div>
-            <div className="col-span-12 sm:col-span-4 2xl:col-span-3 box  p-5 cursor-pointer zoom-in">
+            {/* <div className="col-span-12 sm:col-span-4 2xl:col-span-3 box  p-5 cursor-pointer zoom-in">
               <div className="font-medium text-base">Created At</div>
               <div className="text-opacity-80 dark:text-slate-500">
                 {new Date(accountDetails.created_at).toLocaleDateString()}
               </div>
-            </div>
+            </div> */}
             <div className="col-span-12 sm:col-span-4 2xl:col-span-3 box p-5 cursor-pointer zoom-in">
               <div className="font-medium text-base">Balance</div>
               <div className="text-slate-500 text-xs">{accountDetails.balance}</div>

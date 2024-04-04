@@ -1,5 +1,5 @@
 import { BrowserWindow, app, dialog, ipcMain, shell } from 'electron'
-import { FileSystemWallet, SavedStore, SolProgram } from '../types/Store'
+import { FileSystemWallet, NETWORK, SavedStore, SolProgram } from '../types/Store'
 import { RunCommand, createAccount, createProgram } from './commands'
 import RunQuery, { sendSettings } from './queries'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
@@ -301,6 +301,29 @@ app.whenReady().then(() => {
       }
     } catch (error) {
       return false
+    }
+    return true
+  })
+  // Topics.SET_NETWORK
+  ipcMain.handle(Topics.SET_NETWORK, (_event, id: NETWORK) => {
+    console.log("setting network to ", id)
+    // if we are switching back to localhost, we need to construct the url: this is because we use custom ports
+    if (id === NETWORK.LOCALHOST) {
+      store.set("json_rpc_url", `http://localhost:${store.store.port}`)
+      // make sure validator is running
+      if (!isValidatorRunning()) {
+        runValidator()
+        // wait for 3 seconds
+        setTimeout(() => {
+          mainWindow.webContents.send(`${Topics.VALIDATOR}:${Topics.STATUS}`, true)
+        }, 3000)
+      }
+    } else {
+      store.set("json_rpc_url",id)
+    }
+    let settings;
+    if ((settings = sendSettings())) {
+      mainWindow.webContents.send(`${Topics.SETTINGS}:${Topics.UPDATE}`, settings)
     }
     return true
   })

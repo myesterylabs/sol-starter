@@ -15,8 +15,12 @@ const schema: Store.Schema<SavedStore> = {
   },
   json_rpc_url: {
     type: 'string',
-    format: 'uri',
     default: 'http://127.0.0.1:8899'
+  },
+  port: {
+    type: 'string',
+    pattern: '^[0-9]{4,5}$',
+    default: '8899'
   },
   ws_url: {
     type: 'string',

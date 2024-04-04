@@ -1,6 +1,7 @@
+import { atom, selector } from 'recoil'
+
 import { SavedStore } from '@type/Store'
 import { Topics } from '@type/Topic'
-import { atom } from 'recoil'
 import { setRecoil } from 'recoil-nexus'
 
 // import { Commands } from '@type/Command'
@@ -29,6 +30,14 @@ const savedStore = atom({
   default: {} as SavedStore,
   effects: [syncStorageEffect()]
 })
+
+export const jsonRpcUrlSelector = selector({
+  key: 'jsonRpcUrlSelector',
+  get: ({get}) => {
+    const savedStoreValue = get(savedStore);
+    return savedStoreValue.json_rpc_url;
+  }
+});
 
 window.api.listen(Topics.SAVEDSTORE, Topics.UPDATE, (val: SavedStore) => {
   // get the hashed value of the store

@@ -34,7 +34,7 @@ window.api.listen(Topics.SETTINGS, Topics.UPDATE, (val: SolanaConfig) => {
   // get the hashed value of the store
   const hashedVal = btoa(JSON.stringify(val))
   // doing this just to trigger an update
-  console.log(hashedVal)
+  hashedVal
   setRecoil(solSettings, val)
 })
 
