@@ -36,7 +36,7 @@ function Main() {
         {/* BEGIN: Side Menu */}
         <nav className="side-nav sticky top-0">
           <Link
-            to="/side-menu/dashboard-overview-1"
+            to="/"
             className="intro-x flex items-center pl-5 pt-4 mt-3"
           >
             <img alt="Logo" className="w-10" src="/img/sol-starter-free.png" />

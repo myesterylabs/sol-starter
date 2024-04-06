@@ -2,10 +2,10 @@ import { Lucide, Modal, ModalBody } from '@/base-components'
 import { adjectives, animals, colors, uniqueNamesGenerator } from 'unique-names-generator'
 import { useEffect, useState } from 'react'
 
+import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import { savedStore } from '@renderer/stores/saved-store'
 import { useRecoilValue } from 'recoil'
-import { Link } from 'react-router-dom'
 
 function Main() {
   const [accountName, setAccountName] = useState('')
@@ -153,6 +153,7 @@ function Main() {
                 }}
               />
             </div>
+            
             <div className="mt-3">
               <label>Choose Root Folder</label>
               <div className="form-switch mt-2">
