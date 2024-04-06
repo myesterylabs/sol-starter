@@ -206,7 +206,7 @@ export const createProgram = async (
   }
 
   if (template === 'solana-dapp') {
-    return createSolanaDapp(name, destinationPath, app)
+    return createSolanaDapp(name, destinationPath)
   }
 
   return createBlankProgram(name, destinationPath, app)
