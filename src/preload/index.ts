@@ -29,8 +29,8 @@ const api = {
   createAccount: (name: string, override: boolean) =>
     ipcRenderer.invoke(Topics.CREATE_ACCOUNT, name, override),
   selectFolder: (): Promise<string> => ipcRenderer.invoke(Topics.SELECT_FOLDER),
-  createProgram: (name: string, path: string) =>
-    ipcRenderer.invoke(Topics.CREATE_PROGRAM, name, path) as Promise<boolean>,
+  createProgram: (name: string, template:string, path: string) =>
+    ipcRenderer.invoke(Topics.CREATE_PROGRAM, name,template, path) as Promise<boolean>,
   code: (path: string): Promise<string> => ipcRenderer.invoke(Topics.CODE, path),
   updateStore: (key: keyof SavedStore, value: any) =>
     ipcRenderer.invoke(`${Topics.SAVEDSTORE}:${Topics.UPDATE}`, key, value),

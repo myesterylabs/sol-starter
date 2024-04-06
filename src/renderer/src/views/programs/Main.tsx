@@ -11,6 +11,8 @@ function Main() {
   const [accountName, setAccountName] = useState('')
   // const [mainAccount, setMainAccount] = useState(false)
   const [folder, setFolder] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [template, setTemplate] = useState('blank') // ['solana-dapp', 'anchor', 'blank']
   const store = useRecoilValue(savedStore)
   // check if a query param called openModal is set to true
   const openModal = window.location.search.match(/openModal=(?<openModal>\w+)/)?.groups || {}
@@ -93,40 +95,6 @@ function Main() {
         </div>
         {/* END: Data List */}
       </div>
-      {/* BEGIN: Delete Confirmation Modal */}
-      {/* <Modal
-        show={deleteConfirmationModal}
-        onHidden={() => {
-          setDeleteConfirmationModal(false)
-        }}
-      >
-        <ModalBody className="p-0">
-          <div className="p-5 text-center">
-            <Lucide icon="XCircle" className="w-16 h-16 text-danger mx-auto mt-3" />
-            <div className="text-3xl mt-5">Are you sure?</div>
-            <div className="text-slate-500 mt-2">
-              Do you really want to delete these records? <br />
-              This process cannot be undone.
-            </div>
-          </div>
-          <div className="px-5 pb-8 text-center">
-            <button
-              type="button"
-              onClick={() => {
-                setDeleteConfirmationModal(false)
-              }}
-              className="btn btn-outline-secondary w-24 mr-1"
-            >
-              Cancel
-            </button>
-            <button type="button" className="btn btn-danger w-24">
-              Delete
-            </button>
-          </div>
-        </ModalBody>
-      </Modal> */}
-
-      {/* END: Delete Confirmation Modal */}
 
       <Modal
         show={creationModal}
@@ -153,7 +121,56 @@ function Main() {
                 }}
               />
             </div>
-            
+
+            <div className="mt-3">
+              <label>Choose Template</label>
+            </div>
+
+            <div className="p-4 grid grid-cols-4 gap-5">
+              <div
+                className={
+                  'rounded-2xl px-4 cursor-pointer' +
+                  (template == 'solana-dapp' ? 'border-red-100 border-2' : '')
+                }
+                onClick={() => {
+                  setTemplate('solana-dapp')
+                }}
+              >
+                <div className="flex justify-center my-3">
+                  <img className="w-3/4 self-center" src="/img/nextjs-icon.svg" alt="anchor" />
+                </div>
+                <div className="text-center font-bold hover:text-blue-400">Solana Dapp</div>
+              </div>
+              <div
+                className={
+                  'rounded-2xl px-4 cursor-pointer' +
+                  (template == 'anchor' ? 'border-red-100 border-2' : '')
+                }
+                onClick={() => {
+                  setTemplate('anchor')
+                }}
+              >
+                <div className="flex justify-center my-3">
+                  <img className="w-3/4 self-center" src="/img/anchor-logo.webp" alt="anchor" />
+                </div>
+                <div className="text-center font-bold hover:text-blue-400">Anchor</div>
+              </div>
+              <div
+                className={
+                  'rounded-2xl px-4 cursor-pointer' +
+                  (template == 'blank' ? 'border-red-100 border-2' : '')
+                }
+                onClick={() => {
+                  setTemplate('blank')
+                }}
+              >
+                <div className="flex justify-center my-3">
+                  <img className="w-3/4 self-center" src="/img/blank-file.svg" alt="anchor" />
+                </div>
+                <div className="text-center font-bold hover:text-blue-400">Blank</div>
+              </div>
+            </div>
+
             <div className="mt-3">
               <label>Choose Root Folder</label>
               <div className="form-switch mt-2">
@@ -172,6 +189,140 @@ function Main() {
               </div>
             </div>
 
+            {loading && (
+              <div className="grid">
+                <div className="col-span-6 sm:col-span-3 xl:col-span-2 flex flex-col justify-end items-center">
+                  <svg
+                    width="20"
+                    viewBox="0 0 58 58"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-8 h-8"
+                  >
+                    <g fill="none" fill-rule="evenodd">
+                      <g transform="translate(2 1)" stroke="rgb(30, 41, 59)" stroke-width="1.5">
+                        <circle
+                          cx="42.601"
+                          cy="11.462"
+                          r="5"
+                          fill-opacity="1"
+                          fill="rgb(30, 41, 59)"
+                        >
+                          <animate
+                            attributeName="fill-opacity"
+                            begin="0s"
+                            dur="1.3s"
+                            values="1;0;0;0;0;0;0;0"
+                            calcMode="linear"
+                            repeatCount="indefinite"
+                          ></animate>
+                        </circle>
+                        <circle
+                          cx="49.063"
+                          cy="27.063"
+                          r="5"
+                          fill-opacity="0"
+                          fill="rgb(30, 41, 59)"
+                        >
+                          <animate
+                            attributeName="fill-opacity"
+                            begin="0s"
+                            dur="1.3s"
+                            values="0;1;0;0;0;0;0;0"
+                            calcMode="linear"
+                            repeatCount="indefinite"
+                          ></animate>
+                        </circle>
+                        <circle
+                          cx="42.601"
+                          cy="42.663"
+                          r="5"
+                          fill-opacity="0"
+                          fill="rgb(30, 41, 59)"
+                        >
+                          <animate
+                            attributeName="fill-opacity"
+                            begin="0s"
+                            dur="1.3s"
+                            values="0;0;1;0;0;0;0;0"
+                            calcMode="linear"
+                            repeatCount="indefinite"
+                          ></animate>
+                        </circle>
+                        <circle cx="27" cy="49.125" r="5" fill-opacity="0" fill="rgb(30, 41, 59)">
+                          <animate
+                            attributeName="fill-opacity"
+                            begin="0s"
+                            dur="1.3s"
+                            values="0;0;0;1;0;0;0;0"
+                            calcMode="linear"
+                            repeatCount="indefinite"
+                          ></animate>
+                        </circle>
+                        <circle
+                          cx="11.399"
+                          cy="42.663"
+                          r="5"
+                          fill-opacity="0"
+                          fill="rgb(30, 41, 59)"
+                        >
+                          <animate
+                            attributeName="fill-opacity"
+                            begin="0s"
+                            dur="1.3s"
+                            values="0;0;0;0;1;0;0;0"
+                            calcMode="linear"
+                            repeatCount="indefinite"
+                          ></animate>
+                        </circle>
+                        <circle
+                          cx="4.938"
+                          cy="27.063"
+                          r="5"
+                          fill-opacity="0"
+                          fill="rgb(30, 41, 59)"
+                        >
+                          <animate
+                            attributeName="fill-opacity"
+                            begin="0s"
+                            dur="1.3s"
+                            values="0;0;0;0;0;1;0;0"
+                            calcMode="linear"
+                            repeatCount="indefinite"
+                          ></animate>
+                        </circle>
+                        <circle
+                          cx="11.399"
+                          cy="11.462"
+                          r="5"
+                          fill-opacity="0"
+                          fill="rgb(30, 41, 59)"
+                        >
+                          <animate
+                            attributeName="fill-opacity"
+                            begin="0s"
+                            dur="1.3s"
+                            values="0;0;0;0;0;0;1;0"
+                            calcMode="linear"
+                            repeatCount="indefinite"
+                          ></animate>
+                        </circle>
+                        <circle cx="27" cy="5" r="5" fill-opacity="0" fill="rgb(30, 41, 59)">
+                          <animate
+                            attributeName="fill-opacity"
+                            begin="0s"
+                            dur="1.3s"
+                            values="0;0;0;0;0;0;0;1"
+                            calcMode="linear"
+                            repeatCount="indefinite"
+                          ></animate>
+                        </circle>
+                      </g>
+                    </g>
+                  </svg>
+                  <div className="text-center text-xs mt-2">Cloning Repository</div>
+                </div>
+              </div>
+            )}
             <div className="text-right mt-5">
               <button
                 onClick={() => {
@@ -185,7 +336,9 @@ function Main() {
               <button
                 disabled={!folder}
                 onClick={() => {
-                  window.api.createProgram(accountName, folder).then((res) => {
+                  setLoading(true)
+                  window.api.createProgram(accountName, template, folder).then((res) => {
+                    setLoading(false)
                     if (res) {
                       setCreationModal(false)
                       alert('Project Created')

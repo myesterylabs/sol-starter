@@ -150,14 +150,16 @@ app.whenReady().then(() => {
     // load details like amount of files, last modified, version
     let no_of_files: string[], last_modified: Date
     try {
-     no_of_files = await fsp.readdir(program.path)
-       last_modified = (await fsp.stat(program.path)).mtime
+      no_of_files = await fsp.readdir(program.path)
+      last_modified = (await fsp.stat(program.path)).mtime
     } catch (error) {
       // if file does not exist, delete from records and throw error
-      store.set('programs', programs.filter((p) => p.id !== id))
+      store.set(
+        'programs',
+        programs.filter((p) => p.id !== id)
+      )
       throw new Error('File does not exist')
     }
-
 
     return {
       ...program,
@@ -180,7 +182,7 @@ app.whenReady().then(() => {
     // get balance using solana cli
     // command should look like solana balance 9Gz7x9hqcshJsMmu3PUMWaSsraH51Sqotj91wnHsQzNh --url=http://localhost:8899
     let command = `solana balance ${account.publicKey} --url=${store.store.json_rpc_url}`
-    let balance = (execSync(command)).toString()
+    let balance = execSync(command).toString()
 
     return {
       ...account,
@@ -199,7 +201,7 @@ app.whenReady().then(() => {
       programs.splice(index, 1)
       store.set('programs', programs)
       // unlink the directory
-      fsp.rmdir(program.path, { recursive: true })
+      // fsp.rmdir(program.path, { recursive: true })
       return true
     }
     return false
@@ -256,28 +258,31 @@ app.whenReady().then(() => {
     return settings
   })
 
-  ipcMain.handle(Topics.CREATE_PROGRAM, async (_event, name: string, path: string) => {
-    let res = await createProgram(name, path, app)
-    if (res) {
-      store.set('programs', [
-        ...(store.get('programs') || []),
-        {
-          name,
-          path: res,
-          created_at: new Date().toISOString(),
-          id: ulid()
-        }
-      ])
+  ipcMain.handle(
+    Topics.CREATE_PROGRAM,
+    async (_event, name: string, template: string, path: string) => {
+      let res = await createProgram(name, template, path, app)
+      if (res) {
+        store.set('programs', [
+          ...(store.get('programs') || []),
+          {
+            name,
+            path: res,
+            created_at: new Date().toISOString(),
+            id: ulid()
+          }
+        ])
+      }
+      return res
     }
-    return res
-  })
+  )
 
   ipcMain.handle(Topics.SET_RPC_PORT, (_event, port: string) => {
     let command = `solana config set --url http://localhost:${port}`
     try {
       execSync(command)
       store.store.json_rpc_url = `http://localhost:${port}`
-      let settings;
+      let settings
       if ((settings = sendSettings())) {
         mainWindow.webContents.send(`${Topics.SETTINGS}:${Topics.UPDATE}`, settings)
       }
@@ -295,7 +300,7 @@ app.whenReady().then(() => {
     let command = `solana config set --keypair ${account.path}`
     try {
       execSync(command)
-      let settings;
+      let settings
       if ((settings = sendSettings())) {
         mainWindow.webContents.send(`${Topics.SETTINGS}:${Topics.UPDATE}`, settings)
       }
@@ -306,10 +311,10 @@ app.whenReady().then(() => {
   })
   // Topics.SET_NETWORK
   ipcMain.handle(Topics.SET_NETWORK, (_event, id: NETWORK) => {
-    console.log("setting network to ", id)
+    console.log('setting network to ', id)
     // if we are switching back to localhost, we need to construct the url: this is because we use custom ports
     if (id === NETWORK.LOCALHOST) {
-      store.set("json_rpc_url", `http://localhost:${store.store.port}`)
+      store.set('json_rpc_url', `http://localhost:${store.store.port}`)
       // make sure validator is running
       if (!isValidatorRunning()) {
         runValidator()
@@ -319,9 +324,9 @@ app.whenReady().then(() => {
         }, 3000)
       }
     } else {
-      store.set("json_rpc_url",id)
+      store.set('json_rpc_url', id)
     }
-    let settings;
+    let settings
     if ((settings = sendSettings())) {
       mainWindow.webContents.send(`${Topics.SETTINGS}:${Topics.UPDATE}`, settings)
     }

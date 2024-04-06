@@ -7,7 +7,8 @@ import { BrowserWindow } from 'electron'
 import { Topics } from '../types/Topic'
 import fs from 'fs'
 import path from 'path'
-import { stringify } from 'querystring'
+
+// import { stringify } from 'querystring'
 
 const fsp = fs.promises
 const commandMap: Record<Commands, string> = {
@@ -104,23 +105,11 @@ const stringify = (str: string) => {
   return str.trim().replace(/\s/g, '-').toLowerCase()
 }
 
-export const createProgram = async (
+export const createBlankProgram = async (
   name: string,
   destinationPath: string,
   app: Electron.App
 ): Promise<string> => {
-  // ensure the path exists
-  let exists = fs.existsSync(destinationPath)
-  if (!exists) {
-    return Promise.reject(false)
-  }
-  // make sure directory has no files
-  let files = await fsp.readdir(destinationPath)
-  if (files.length > 1) {
-    console.log('destination directory is not empty, it has ' + files.length + ' files ' + files[0])
-    destinationPath = path.join(destinationPath, stringify(name))
-    await fsp.mkdir(destinationPath)
-  }
   // copy the template to the path
   let res = await copyDirectory(
     path.join(app.getAppPath(), 'resources', 'sample-program'),
@@ -139,6 +128,95 @@ export const createProgram = async (
     return destinationPath
   }
   return destinationPath
+}
+
+export const createAnchorProgram = async (
+  name: string,
+  destinationPath: string
+): Promise<string> => {
+  // run a small command to see if anchor is installed
+  try {
+    execSync('avm --help', { encoding: 'utf-8' })
+  } catch (error) {
+    console.log('anchor not installed')
+    // if anchor is not installed, install it
+    execSync('cargo install --git https://github.com/coral-xyz/anchor avm --locked --force', {
+      encoding: 'utf-8'
+    })
+  }
+
+  try {
+    execSync('anchor --version', { encoding: 'utf-8' })
+  } catch (error) {
+    console.log('anchor installed but avm not')
+    execSync('avm install latest', { encoding: 'utf-8' })
+    execSync('avm use latest', { encoding: 'utf-8' })
+  }
+  console.log('Creating anchor program..')
+  // create a new anchor program
+  execSync(`anchor init ${stringify(name)}`, { encoding: 'utf-8', cwd: destinationPath })
+
+  return destinationPath + '/' + name
+}
+
+export const createSolanaDapp = async (
+  name: string,
+  destinationPath: string,
+  app: Electron.App
+): Promise<string> => {
+  // copy the template to the path
+  let res = await copyDirectory(
+    path.join(app.getAppPath(), 'resources', 'solana-dapp'),
+    destinationPath
+  )
+  if (res) {
+    // we need to use fast-toml to edit the content of the Cargo.toml file and set the name
+    const toml = await fsp.readFile(path.join(destinationPath, 'Cargo.toml'), 'utf-8')
+    // let stringify replace spaces with - and make lowercase after trimming
+    let stringifiedName = stringify(name)
+
+    const newToml = toml
+      .replace('test-prog', stringifiedName)
+      .replace('hello_world', stringify(name))
+    await fsp.writeFile(path.join(destinationPath, 'Cargo.toml'), newToml, 'utf-8')
+    return destinationPath
+  }
+  return destinationPath
+}
+
+export const createProgram = async (
+  name: string,
+  template: string,
+  destinationPath: string,
+  app: Electron.App
+): Promise<string> => {
+  let exists = fs.existsSync(destinationPath)
+  if (!exists) {
+    console.log('destination directory does not exist')
+    return Promise.reject('destination directory does not exist')
+  }
+  // if its anchor, try to install it and then create a new project
+  if (template === 'anchor') {
+    return createAnchorProgram(stringify(name), destinationPath)
+  }
+
+  // ensure its really empty
+  let files = await fsp.readdir(destinationPath)
+  if (files.length > 1) {
+    console.log('destination directory is not empty, it has ' + files.length + ' files ' + files[0])
+    destinationPath = path.join(destinationPath, stringify(name))
+    await fsp.mkdir(destinationPath)
+  }
+
+  if (template === 'blank') {
+    return createBlankProgram(name, destinationPath, app)
+  }
+
+  if (template === 'solana-dapp') {
+    return createSolanaDapp(name, destinationPath, app)
+  }
+
+  return createBlankProgram(name, destinationPath, app)
 }
 
 async function copyDirectory(source, destination) {
