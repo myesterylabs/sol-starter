@@ -201,7 +201,7 @@ app.whenReady().then(() => {
       programs.splice(index, 1)
       store.set('programs', programs)
       // unlink the directory
-      // fsp.rmdir(program.path, { recursive: true })
+      fsp.rmdir(program.path, { recursive: true })
       return true
     }
     return false

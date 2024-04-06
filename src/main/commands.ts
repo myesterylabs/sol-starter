@@ -161,27 +161,20 @@ export const createAnchorProgram = async (
 
 export const createSolanaDapp = async (
   name: string,
-  destinationPath: string,
-  app: Electron.App
+  destinationPath: string
 ): Promise<string> => {
-  // copy the template to the path
-  let res = await copyDirectory(
-    path.join(app.getAppPath(), 'resources', 'solana-dapp'),
-    destinationPath
-  )
-  if (res) {
-    // we need to use fast-toml to edit the content of the Cargo.toml file and set the name
-    const toml = await fsp.readFile(path.join(destinationPath, 'Cargo.toml'), 'utf-8')
-    // let stringify replace spaces with - and make lowercase after trimming
-    let stringifiedName = stringify(name)
-
-    const newToml = toml
-      .replace('test-prog', stringifiedName)
-      .replace('hello_world', stringify(name))
-    await fsp.writeFile(path.join(destinationPath, 'Cargo.toml'), newToml, 'utf-8')
-    return destinationPath
+  // clone https://github.com/solana-labs/dapp-scaffold
+  try {
+    execSync(`git clone https://github.com/solana-labs/dapp-scaffold ${stringify(name)}`, {
+      encoding: 'utf-8',
+      cwd: destinationPath
+    })
+  } catch (error) {
+    console.log('error cloning dapp-scaffold', error)
+    return Promise.reject('error cloning dapp-scaffold: ' + error)
   }
-  return destinationPath
+
+  return destinationPath + '/' + name
 }
 
 export const createProgram = async (
