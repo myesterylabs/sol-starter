@@ -334,7 +334,7 @@ function Main() {
                 Cancel
               </button>
               <button
-                disabled={!folder}
+                disabled={!folder || loading}
                 onClick={() => {
                   setLoading(true)
                   window.api.createProgram(accountName, template, folder).then((res) => {
